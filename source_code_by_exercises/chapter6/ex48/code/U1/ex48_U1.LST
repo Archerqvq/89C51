@@ -1,0 +1,44 @@
+C51 COMPILER V9.01   EX48_U1                                                               07/01/2024 15:11:20 PAGE 1   
+
+
+C51 COMPILER V9.01, COMPILATION OF MODULE EX48_U1
+OBJECT MODULE PLACED IN ex48_U1.OBJ
+COMPILER INVOKED BY: C:\Keil_v5_C51\C51\BIN\C51.EXE ex48_U1.c BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          // ex48: A square wave with a positive pulse width of 250us is output
+   2          #include <reg51.h>
+   3          
+   4          sbit u = P1 ^ 4;
+   5          
+   6          void main(void)
+   7          {
+   8   1              TMOD = 0x02; // Timer0 in method2
+   9   1              EA = 1; // Enable global interrupt
+  10   1              ET0 = 1;// Timer0 interrupt allowed
+  11   1      
+  12   1              TH0 = 256 - 230;
+  13   1              TL0 = 256 - 230;
+  14   1              TR0 = 1;
+  15   1              while(1);
+  16   1      }
+  17          
+  18          void timer0(void) interrupt 1 using 0
+  19          {
+  20   1              u = ~u;
+  21   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     20    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

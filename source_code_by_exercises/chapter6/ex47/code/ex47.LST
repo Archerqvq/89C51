@@ -1,0 +1,166 @@
+C51 COMPILER V9.01   EX47                                                                  07/01/2024 14:26:18 PAGE 1   
+
+
+C51 COMPILER V9.01, COMPILATION OF MODULE EX47
+OBJECT MODULE PLACED IN ex47.OBJ
+COMPILER INVOKED BY: C:\Keil_v5_C51\C51\BIN\C51.EXE ex47.c BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          // example 47
+   2          #include <reg51.h>
+   3          
+   4          sbit sound = P3 ^ 7;
+   5          unsigned int C; // To store the constant number for timer
+   6          
+   7          // Macro definition for audio lowering C tone
+   8          // Define the macro l_dao as the frequency of the low tone '1', which is 262 Hz
+   9          #define l_dao 262 
+  10          // Define the macro l_re as the frequency of the low tone '2', which is 286
+  11          #define l_re 286 
+  12          // Define the macro l_mi as the frequency of the low tone '3', which is 311
+  13          #define l_mi 311 
+  14          // Define the macro l_fa as the frequency of the low tone '4', which is 349 
+  15          #define l_fa 349
+  16          // Define the macro l_sao as the frequency of the low tone '5', which is 392
+  17          #define l_sao 392
+  18          // Define the macro l_la as the frequency of the low tone '6', which is 440
+  19          #define l_la 440
+  20          // Define the macro l_xi as the frequency of the low tone '7', which is 494
+  21          #define l_xi 494
+  22          
+  23          // Macro definition for audio middle C tone       
+  24          #define dao 523
+  25          #define re 587
+  26          #define mi 659
+  27          #define fa 698
+  28          #define sao 784
+  29          #define la 880
+  30          #define xi 987
+  31          
+  32          // Macro definition for audio high C tone        
+  33          #define h_dao 1046
+  34          #define h_re 1174
+  35          #define h_mi 1318
+  36          #define h_fa 1396
+  37          #define h_sao 1567
+  38          #define h_la 1760
+  39          #define h_xi 1975
+  40          
+  41          // dealy for 200ms
+  42          void delay(void)
+  43          {
+  44   1              unsigned char i, j;
+  45   1      
+  46   1              for(i = 0; i < 250; i++)
+  47   1              {
+  48   2                      for(j = 0; j < 250; j++)
+  49   2                      {
+  50   3                              ;
+  51   3                      }                                                 
+  52   2              }
+  53   1      }
+  54          
+  55          void main(void)
+C51 COMPILER V9.01   EX47                                                                  07/01/2024 14:26:18 PAGE 2   
+
+  56          {
+  57   1              unsigned char i, j;
+  58   1              // Using the 'code' keyword in this context helps in storing the
+  59   1              // array 'f' in the program memory.
+  60   1      
+  61   1              // Each line corresponds to a note
+  62   1              unsigned int code f[] = {re, mi, re, dao, l_la, dao, l_la, 
+  63   1                                                               l_sao, l_mi, l_sao, l_la, dao,
+  64   1                                                               l_la, dao, sao, la, mi, sao,
+  65   1                                                               re,
+  66   1                                                               mi, re, mi, sao, mi,
+  67   1                                                               l_sao, l_mi, l_sao, l_la, dao,
+  68   1                                                               l_la, l_la, dao, l_la, l_sao, l_re, l_mi,
+  69   1                                                               l_sao,
+  70   1                                                               re, re, sao, la, sao,
+  71   1                                                               fa, mi, sao, mi,
+  72   1                                                               la, sao, mi, re, mi, l_la, dao,
+  73   1                                                               re,
+  74   1                                                               mi, re, mi, sao, mi,
+  75   1                                                               l_sao, l_mi, l_sao, l_la, dao,
+  76   1                                                               l_la, dao, re, l_la, dao, re, mi,
+  77   1                                                               re,
+  78   1                                                               l_la, dao, re, l_la, dao, re, mi,
+  79   1                                                               re,
+  80   1                                                               0xFF}; // 0xFF is used as the end mark of the note
+  81   1              // Here are the beats for each note in the sheet music
+  82   1              // "4" corresponds to 4 delay units, "2" corresponds to 2 delay units, and "1" corresponds to 1 delay uni
+             -t
+  83   1      
+  84   1              unsigned char code JP[] = {4, 1, 1, 4, 1, 1, 2,
+  85   1                                                                 2, 2, 2, 2, 8,
+  86   1                                                                 4, 2, 3, 1, 2, 2,
+  87   1                                                                 10,
+  88   1                                                                 4, 2, 2, 4, 4,
+  89   1                                                                 2, 2, 2, 2, 4,
+  90   1                                                                 2, 2, 2, 2, 2, 2, 2,
+  91   1                                                                 10,
+  92   1                                                                 4, 4, 4, 2, 2,
+  93   1                                                                 4, 2, 4, 4,
+  94   1                                                                 4, 2, 2, 2, 2, 2, 2,
+  95   1                                                                 10,
+  96   1                                                                 4, 2, 2, 4, 4,
+  97   1                                                                 2, 2, 2, 2, 6,
+  98   1                                                                 4, 2, 2, 4, 1, 1, 4,
+  99   1                                                                 10,
+ 100   1                                                                 4, 2, 2, 4, 1, 1, 4,
+ 101   1                                                                 10};
+ 102   1              
+ 103   1              EA = 1; // Enable global interrupt
+ 104   1              ET0 = 1; // T0 interrupt allowed
+ 105   1              TMOD = 0x00; // Mode 1 with timer T0 (13-bit counter) 
+ 106   1      
+ 107   1              while(1)
+ 108   1              {
+ 109   2                      i = 0; 
+ 110   2                      while(f[i] != 0xFF) // As long as you don't read the end sign, continue playing
+ 111   2                      {
+ 112   3                              C = 460830 / f[i]; // Count the number of level reversals
+ 113   3                              // It can be proved that this is the method of assigning the initial value of the 13-bit counter TH0 8 
+             -bits higher
+ 114   3                              TH0 = (8192 - C) / 32;
+ 115   3                              // It can be proved that this is the method of assigning the initial value of the 13-bit counter TH0 8 
+C51 COMPILER V9.01   EX47                                                                  07/01/2024 14:26:18 PAGE 3   
+
+             -bits lower
+ 116   3                              TL0 = (8192 - C) % 32;
+ 117   3                              TR0 = 1; // Enable timer0
+ 118   3      
+ 119   3                              for(j = 0; j < JP[i]; j++) // Control the number of beats
+ 120   3                              {
+ 121   4                                      delay(); // Delay 1 beat unit                   
+ 122   4                              }
+ 123   3      
+ 124   3                              TR0 = 0; // Disable timer0
+ 125   3      
+ 126   3                              i++; // Play the next note              
+ 127   3                      }               
+ 128   2              }
+ 129   1      }
+ 130          
+ 131          void timer0(void) interrupt 1 using 1
+ 132          {
+ 133   1              sound = !sound;
+ 134   1              TH0 = (8192 - C) / 32;
+ 135   1              TL0 = (8192 - C) % 32;          
+ 136   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    168    ----
+   CONSTANT SIZE    =    242    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      2       1
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

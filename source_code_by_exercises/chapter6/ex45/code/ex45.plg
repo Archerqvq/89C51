@@ -1,0 +1,26 @@
+<html>
+<body>
+<pre>
+<h1>µVision Build Log</h1>
+<h2>Project:</h2>
+C:\Users\Achar\Desktop\Notes\proteus\source_code_by_exercises\chapter6\ex45\code\ex45.uvproj
+Project File Date:  07/01/2024
+
+<h2>Output:</h2>
+Build target 'Target 1'
+assembling STARTUP.A51...
+compiling ex45.c...
+EX45.C(42): error C202: 'D12': undefined identifier
+Target not created
+Build target 'Target 1'
+compiling ex45.c...
+linking...
+Program Size: data=11.0 xdata=0 code=79
+creating hex file from "ex45"...
+"ex45" - 0 Error(s), 0 Warning(s).
+Build target 'Target 1'
+compiling ex45.c...
+linking...
+Program Size: data=11.0 xdata=0 code=79
+creating hex file from "ex45"...
+"ex45" - 0 Error(s), 0 Warning(s).

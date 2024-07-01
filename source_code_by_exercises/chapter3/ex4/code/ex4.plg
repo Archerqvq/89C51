@@ -1,0 +1,20 @@
+<html>
+<body>
+<pre>
+<h1>µVision Build Log</h1>
+<h2>Project:</h2>
+C:\Users\Achar\Desktop\Notes\proteus\source_code_by_exercises\chapter3\ex4\code\ex4.uvproj
+Project File Date:  06/28/2024
+
+<h2>Output:</h2>
+Build target 'Target 1'
+assembling STARTUP.A51...
+compiling ex4.c...
+linking...
+Program Size: data=9.0 xdata=0 code=44
+"ex4" - 0 Error(s), 0 Warning(s).
+Build target 'Target 1'
+linking...
+Program Size: data=9.0 xdata=0 code=44
+creating hex file from "ex4"...
+"ex4" - 0 Error(s), 0 Warning(s).

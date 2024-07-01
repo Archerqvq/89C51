@@ -1,0 +1,20 @@
+<html>
+<body>
+<pre>
+<h1>µVision Build Log</h1>
+<h2>Project:</h2>
+C:\Users\Achar\Desktop\Notes\proteus\source_code_by_exercises\chapter6\ex44\code\ex44.uvproj
+Project File Date:  07/01/2024
+
+<h2>Output:</h2>
+Build target 'Target 1'
+assembling STARTUP.A51...
+compiling ex44.c...
+EX44.C(22): error C129: missing ';' before 'timer0'
+Target not created
+Build target 'Target 1'
+compiling ex44.c...
+linking...
+Program Size: data=9.0 xdata=0 code=44
+creating hex file from "ex44"...
+"ex44" - 0 Error(s), 0 Warning(s).

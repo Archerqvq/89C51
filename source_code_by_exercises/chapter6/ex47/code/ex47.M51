@@ -1,0 +1,181 @@
+BL51 BANKED LINKER/LOCATER V6.22                                                        07/01/2024  14:26:19  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V6.22, INVOKED BY:
+C:\KEIL_V5_C51\C51\BIN\BL51.EXE STARTUP.obj, ex47.obj TO ex47
+
+
+MEMORY MODEL: SMALL
+
+
+INPUT MODULES INCLUDED:
+  STARTUP.obj (?C_STARTUP)
+  ex47.obj (EX47)
+  C:\KEIL_V5_C51\C51\LIB\C51S.LIB (?C?SLDIV)
+  C:\KEIL_V5_C51\C51\LIB\C51S.LIB (?C?ULDIV)
+
+
+LINK MAP OF MODULE:  ex47 (?C_STARTUP)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+            REG     0008H     0008H     ABSOLUTE     "REG BANK 1"
+            DATA    0010H     0002H     UNIT         ?DT?EX47
+            DATA    0012H     0001H     UNIT         _DATA_GROUP_
+            IDATA   0013H     0001H     UNIT         ?STACK
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0003H     ABSOLUTE     
+                    0003H     0008H                  *** GAP ***
+            CODE    000BH     0003H     ABSOLUTE     
+            CODE    000EH     00F2H     UNIT         ?CO?EX47
+            CODE    0100H     00CEH     UNIT         ?C?LIB_CODE
+            CODE    01CEH     0070H     UNIT         ?PR?MAIN?EX47
+            CODE    023EH     0044H     UNIT         ?C?LDIV
+            CODE    0282H     002BH     UNIT         ?PR?TIMER0?EX47
+            CODE    02ADH     000DH     UNIT         ?PR?DELAY?EX47
+            CODE    02BAH     000CH     UNIT         ?C_C51STARTUP
+
+
+
+OVERLAY MAP OF MODULE:   ex47 (?C_STARTUP)
+
+
+SEGMENT                          DATA_GROUP 
+  +--> CALLED SEGMENT          START    LENGTH
+----------------------------------------------
+?C_C51STARTUP                  -----    -----
+  +--> ?PR?MAIN?EX47
+
+?PR?MAIN?EX47                  0012H    0001H
+  +--> ?CO?EX47
+  +--> ?PR?DELAY?EX47
+
+
+
+SYMBOL TABLE OF MODULE:  ex47 (?C_STARTUP)
+
+BL51 BANKED LINKER/LOCATER V6.22                                                      07/01/2024  14:26:19  PAGE 2
+
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        ?C_STARTUP
+  C:02BAH         SEGMENT       ?C_C51STARTUP
+  I:0013H         SEGMENT       ?STACK
+  C:0000H         PUBLIC        ?C_STARTUP
+  D:00E0H         SYMBOL        ACC
+  D:00F0H         SYMBOL        B
+  D:0083H         SYMBOL        DPH
+  D:0082H         SYMBOL        DPL
+  N:0000H         SYMBOL        IBPSTACK
+  N:0100H         SYMBOL        IBPSTACKTOP
+  N:0080H         SYMBOL        IDATALEN
+  C:02BDH         SYMBOL        IDATALOOP
+  N:0000H         SYMBOL        PBPSTACK
+  N:0100H         SYMBOL        PBPSTACKTOP
+  N:0000H         SYMBOL        PDATALEN
+  N:0000H         SYMBOL        PDATASTART
+  N:0000H         SYMBOL        PPAGE
+  N:0000H         SYMBOL        PPAGEENABLE
+  D:00A0H         SYMBOL        PPAGE_SFR
+  D:0081H         SYMBOL        SP
+  C:02BAH         SYMBOL        STARTUP1
+  N:0000H         SYMBOL        XBPSTACK
+  N:0000H         SYMBOL        XBPSTACKTOP
+  N:0000H         SYMBOL        XDATALEN
+  N:0000H         SYMBOL        XDATASTART
+  C:0000H         LINE#         126
+  C:02BAH         LINE#         133
+  C:02BCH         LINE#         134
+  C:02BDH         LINE#         135
+  C:02BEH         LINE#         136
+  C:02C0H         LINE#         185
+  C:02C3H         LINE#         196
+  -------         ENDMOD        ?C_STARTUP
+
+  -------         MODULE        EX47
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  D:00B0H         PUBLIC        P3
+  B:00A8H.7       PUBLIC        EA
+  C:02ADH         PUBLIC        delay
+  C:01CEH         PUBLIC        main
+  B:00B0H.7       PUBLIC        sound
+  D:0089H         PUBLIC        TMOD
+  D:0010H         PUBLIC        C
+  B:00A8H.1       PUBLIC        ET0
+  D:008CH         PUBLIC        TH0
+  D:008AH         PUBLIC        TL0
+  C:0282H         PUBLIC        timer0
+  B:0088H.4       PUBLIC        TR0
+  -------         PROC          DELAY
+  -------         DO            
+  D:0007H         SYMBOL        i
+  D:0006H         SYMBOL        j
+  -------         ENDDO         
+  C:02ADH         LINE#         42
+BL51 BANKED LINKER/LOCATER V6.22                                                      07/01/2024  14:26:19  PAGE 3
+
+
+  C:02ADH         LINE#         43
+  C:02ADH         LINE#         46
+  C:02AFH         LINE#         47
+  C:02AFH         LINE#         48
+  C:02B1H         LINE#         49
+  C:02B1H         LINE#         51
+  C:02B5H         LINE#         52
+  C:02B9H         LINE#         53
+  -------         ENDPROC       DELAY
+  -------         PROC          MAIN
+  -------         DO            
+  D:0012H         SYMBOL        i
+  D:0005H         SYMBOL        j
+  C:000EH         SYMBOL        f
+  C:00B0H         SYMBOL        JP
+  -------         ENDDO         
+  C:01CEH         LINE#         55
+  C:01CEH         LINE#         56
+  C:01CEH         LINE#         103
+  C:01D0H         LINE#         104
+  C:01D2H         LINE#         105
+  C:01D5H         LINE#         107
+  C:01D5H         LINE#         108
+  C:01D5H         LINE#         109
+  C:01D8H         LINE#         110
+  C:01F0H         LINE#         111
+  C:01F0H         LINE#         112
+  C:0205H         LINE#         114
+  C:021DH         LINE#         116
+  C:0222H         LINE#         117
+  C:0224H         LINE#         119
+  C:0232H         LINE#         120
+  C:0232H         LINE#         121
+  C:0235H         LINE#         122
+  C:0238H         LINE#         124
+  C:023AH         LINE#         126
+  C:023CH         LINE#         127
+  -------         ENDPROC       MAIN
+  -------         PROC          TIMER0
+  C:0282H         LINE#         131
+  C:0289H         LINE#         133
+  C:028BH         LINE#         134
+  C:02A3H         LINE#         135
+  C:02A8H         LINE#         136
+  -------         ENDPROC       TIMER0
+  -------         ENDMOD        EX47
+
+  -------         MODULE        ?C?SLDIV
+  C:023EH         PUBLIC        ?C?SLDIV
+  -------         ENDMOD        ?C?SLDIV
+
+  -------         MODULE        ?C?ULDIV
+  C:013CH         PUBLIC        ?C?ULDIV
+  -------         ENDMOD        ?C?ULDIV
+
+Program Size: data=20.0 xdata=0 code=702
+LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)

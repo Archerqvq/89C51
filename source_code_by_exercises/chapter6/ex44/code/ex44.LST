@@ -1,0 +1,50 @@
+C51 COMPILER V9.01   EX44                                                                  07/01/2024 09:59:15 PAGE 1   
+
+
+C51 COMPILER V9.01, COMPILATION OF MODULE EX44
+OBJECT MODULE PLACED IN ex44.OBJ
+COMPILER INVOKED BY: C:\Keil_v5_C51\C51\BIN\C51.EXE ex44.c BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          // example 44:
+   2          #include <reg51.h>
+   3          
+   4          sbit D1 = P2^0; // set bit D1 to P2.0 pin
+   5          
+   6          void main(void)
+   7          {
+   8   1              EA = 1; // turn on global interrupt
+   9   1              ET0 = 1; // timer0 interrupt allowed
+  10   1      
+  11   1              TMOD = 0x01; // timer0 works in method1 
+  12   1              TH0 = (65536 - 46083) / 256; // assign high 8 bits for timer0
+  13   1              TL0 = (65536 - 46083) % 256; // assign low 8 bits for timer0
+  14   1      
+  15   1              TR0 = 1; // enable timer0
+  16   1              while(1); // infinite loop, waiting for interrupt
+  17   1      }
+  18          
+  19          // interrupt service routine for timer0
+  20          // 1 for interrupt number of timer0
+  21          // 0 for number 0 working registers
+  22          void timer0(void) interrupt 1 using 0 
+  23          {
+  24   1              D1 = ~D1; // revert for evevry bit
+  25   1              TH0 = (65536 - 46083) / 256; // reassign high 8 bits for timer0
+  26   1              TL0 = (65536 - 46083) % 256; // reassign low 8 bits for timer0   
+  27   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     26    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

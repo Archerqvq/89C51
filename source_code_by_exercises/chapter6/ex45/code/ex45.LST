@@ -1,0 +1,73 @@
+C51 COMPILER V9.01   EX45                                                                  07/01/2024 10:36:16 PAGE 1   
+
+
+C51 COMPILER V9.01, COMPILATION OF MODULE EX45
+OBJECT MODULE PLACED IN ex45.OBJ
+COMPILER INVOKED BY: C:\Keil_v5_C51\C51\BIN\C51.EXE ex45.c BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          // example 45
+   2          #include <reg51.h>
+   3          
+   4          sbit D1 = P2 ^ 0; // 
+   5          sbit D2 = P2 ^ 1;
+   6          
+   7          // Global variables to store the number of times that T1 and T2 interrupt have occured.
+   8          unsigned char cnt1;     
+   9          unsigned char cnt2; 
+  10          
+  11          void main(void)
+  12          {
+  13   1              EA = 1; // Enable global interrupt
+  14   1      
+  15   1              ET1 = 1;// Enable T1 interrupt
+  16   1              TMOD = 0x10;// T1 in method1
+  17   1              TH1 = (65536 - 46083) / 256; // Assigned high 8 bits for T1
+  18   1              TL1 = (65536 - 46083) % 256; // Assigned low 8 bits for T1
+  19   1              TR1 = 1; // Enable T1
+  20   1              cnt1 = 0; // Counting the number of times of T1 from 0
+  21   1              cnt2 = 0; // Counting the number of times of T2 from 0
+  22   1      
+  23   1              while(1); // Infinite loop
+  24   1      }
+  25          
+  26          // interrupt 3 means the interrupt number of T1
+  27          void timer1(void) interrupt 3 using 0
+  28          {
+  29   1              cnt1++;
+  30   1              cnt2++;
+  31   1      
+  32   1              // When cnt1 comes to 2, it means hitting 100ms
+  33   1              if(cnt1 == 2)
+  34   1              {
+  35   2                      D1 = ~D1; // Revese D1
+  36   2                      cnt1 = 0; // Reset cnt1 to 0
+  37   2              }
+  38   1      
+  39   1              // When cnt2 comes to 8, it means hitting 400ms
+  40   1              if(cnt2 == 8)
+  41   1              {
+  42   2                      D2 = ~D2; // Revese D2
+  43   2                      cnt2 = 0; // Reset cnt2 to 0
+  44   2              }
+  45   1      
+  46   1              TH1 = (65536 - 46083) / 256; // Reassigned high 8 bits for T1
+  47   1              TL1 = (65536 - 46083) % 256; // Reassigned low 8 bits for T1
+  48   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     61    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+C51 COMPILER V9.01   EX45                                                                  07/01/2024 10:36:16 PAGE 2   
+
+   DATA SIZE        =      2    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

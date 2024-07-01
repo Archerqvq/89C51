@@ -1,0 +1,70 @@
+C51 COMPILER V9.01   EX49                                                                  07/01/2024 16:07:21 PAGE 1   
+
+
+C51 COMPILER V9.01, COMPILATION OF MODULE EX49
+OBJECT MODULE PLACED IN ex49.OBJ
+COMPILER INVOKED BY: C:\Keil_v5_C51\C51\BIN\C51.EXE ex49.c BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          // ex49:
+   2          // Use the timer t0 to control the output of rectangular waves with different heights and widths
+   3          #include <reg51.h>
+   4          
+   5          sbit u = P3 ^ 0;
+   6          unsigned char cnt;
+   7          
+   8          void delay30ms(void)
+   9          {
+  10   1              unsigned char m, n;
+  11   1              for(m = 0; m < 100; m++)
+  12   1              {
+  13   2                      for(n = 0; n < 100; n++)
+  14   2                      {
+  15   3                      }
+  16   2              }       
+  17   1      }
+  18          
+  19          void main(void)
+  20          {
+  21   1              unsigned char i;
+  22   1      
+  23   1              EA = 1; // Enable global interrupt
+  24   1              EX0 = 1; // Enable external interrupt
+  25   1              IT0 = 1; // Configure INT0 for falling edge trigger 
+  26   1              
+  27   1              for(i = 0; i < 100; i++) // Output 
+  28   1              {
+  29   2                      u = 1;
+  30   2                      delay30ms();
+  31   2                      u = 0;
+  32   2                      delay30ms();                                                                    
+  33   2              } 
+  34   1      
+  35   1              while(1);
+  36   1      }
+  37          
+  38          void int0(void) interrupt 0 using 0
+  39          {
+  40   1              cnt++;
+  41   1              P1 = cnt;
+  42   1      }
+  43          
+  44          
+  45          
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     43    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      1    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+C51 COMPILER V9.01   EX49                                                                  07/01/2024 16:07:21 PAGE 2   
+
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
