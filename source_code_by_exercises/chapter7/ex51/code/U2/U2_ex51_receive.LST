@@ -1,0 +1,62 @@
+C51 COMPILER V9.01   U2_EX51_RECEIVE                                                       07/02/2024 14:55:48 PAGE 1   
+
+
+C51 COMPILER V9.01, COMPILATION OF MODULE U2_EX51_RECEIVE
+OBJECT MODULE PLACED IN U2_ex51_receive.OBJ
+COMPILER INVOKED BY: C:\Keil_v5_C51\C51\BIN\C51.EXE U2_ex51_receive.c BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          // example 51:
+   2          // Receive data
+   3          
+   4          #include <reg51.h>
+   5          
+   6          unsigned char receive(void)
+   7          {
+   8   1              unsigned char dat;
+   9   1      
+  10   1              // Wait until receive is done, then RI set to 1
+  11   1              while(RI == 0)
+  12   1              {
+  13   2                      ;
+  14   2              }
+  15   1      
+  16   1              RI = 0; // Set RI to 0 for receiving next frame
+  17   1              dat = SBUF; // Assign data from SBUF to variable dat
+  18   1      
+  19   1              return dat; // Return data from receiving
+  20   1      }
+  21          
+  22          void main(void)
+  23          {
+  24   1              TMOD = 0x20; // Timer 1 in method 2
+  25   1              TH1 = 0xFD;      // Initialize high 8-bits of timer 1
+  26   1              TL1 = 0xFD;  // Initialize low 8-bits of timer 1
+  27   1      
+  28   1              SCON = 0x50; // Serial port in method 1, reception is allowed
+  29   1              PCON = 0x00; // Baud rate it 9600bit/s
+  30   1              REN = 1;     // Allowed to receive data
+  31   1      
+  32   1              TR1 = 1;     // Timer 1 activated
+  33   1      
+  34   1              while(1)
+  35   1              {
+  36   2                      P1 = receive(); // Show received data by Port 1
+  37   2              }
+  38   1      
+  39   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     34    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

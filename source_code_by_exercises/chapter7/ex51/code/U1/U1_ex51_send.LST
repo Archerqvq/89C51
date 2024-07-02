@@ -1,0 +1,78 @@
+C51 COMPILER V9.01   U1_EX51_SEND                                                          07/02/2024 14:45:14 PAGE 1   
+
+
+C51 COMPILER V9.01, COMPILATION OF MODULE U1_EX51_SEND
+OBJECT MODULE PLACED IN U1_ex51_send.OBJ
+COMPILER INVOKED BY: C:\Keil_v5_C51\C51\BIN\C51.EXE U1_ex51_send.c BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          // example 51
+   2          // Send data
+   3          
+   4          #include <reg51.h>
+   5          
+   6          // Flow lamp control code
+   7          unsigned char code tab[] = {0xFE, 0xFD, 0xFB, 0xF7, 0xEF, 0xDF, 0xBF, 0x7F};
+   8          
+   9          // Send one byte data
+  10          void send(unsigned char dat)
+  11          {
+  12   1              SBUF = dat; // Wait until write data into send buffer
+  13   1              while(TI == 0); // Wait until IT flag not equivalent to 1
+  14   1              TI = 0;  // Reset TI by software
+  15   1      }
+  16          
+  17          // Delay for 150ms around
+  18          void delay(void)
+  19          {
+  20   1              unsigned char m, n;
+  21   1      
+  22   1              for(m = 0; m < 200; m++)
+  23   1              {
+  24   2                      for(n = 0; n < 250; n++)
+  25   2                      {
+  26   3                              ;
+  27   3                      }
+  28   2              }
+  29   1      }
+  30          
+  31          void main(void)
+  32          {
+  33   1              unsigned char i;
+  34   1              
+  35   1              TMOD = 0x20; // Timer 1 in method 2
+  36   1              TH1 = 0xFD;      // Initialize high 8-bits of timer 1
+  37   1              TL1 = 0xFD;  // Initialize low 8-bits of timer 1
+  38   1      
+  39   1              SCON = 0x40; // Serial port in method 1
+  40   1              PCON = 0x00; // Baud rate is 9600bit/s
+  41   1      
+  42   1              TR1 = 1;     // Enable timer 1
+  43   1      
+  44   1              while(1)
+  45   1              {
+  46   2                      for(i = 0; i < 8; i++)
+  47   2                      {
+  48   3                              send(tab[i]);
+  49   3                              delay(); // Send data every 150ms
+  50   3                      }
+  51   2              }
+  52   1              
+  53   1      }
+
+
+C51 COMPILER V9.01   U1_EX51_SEND                                                          07/02/2024 14:45:14 PAGE 2   
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     58    ----
+   CONSTANT SIZE    =      8    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
