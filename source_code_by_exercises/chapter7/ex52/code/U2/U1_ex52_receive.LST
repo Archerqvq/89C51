@@ -1,0 +1,71 @@
+C51 COMPILER V9.01   U1_EX52_RECEIVE                                                       08/02/2024 16:19:26 PAGE 1   
+
+
+C51 COMPILER V9.01, COMPILATION OF MODULE U1_EX52_RECEIVE
+OBJECT MODULE PLACED IN U1_ex52_receive.OBJ
+COMPILER INVOKED BY: C:\Keil_v5_C51\C51\BIN\C51.EXE U1_ex52_receive.c BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          // example 52:
+   2          // receive data in mode 3
+   3          #include <REG51.h>
+   4          
+   5          // ATTENTION: the 0 bit of PSW is for parity  
+   6          // unsigned char *p = (unsigned char *)0xD0;   // sfr PSW  = 0xD0;
+   7          sbit p = 0xD0;  
+   8          
+   9          // Note: Receive one byte data
+  10          unsigned char recive(void)
+  11          {
+  12   1              unsigned char dat;
+  13   1      
+  14   1              while(RI == 0); // Wait until one byte data recption is completed
+  15   1              RI = 0;                 // Reset RI to 0 for receiving the next frame of data
+  16   1      
+  17   1              ACC = SBUF;             // Calculate parity whether is valid or not
+  18   1      
+  19   1              if(p == RB8)    // Receive data when parity is matched 
+  20   1              {
+  21   2                      // dat = ACC;
+  22   2                      dat = SBUF;
+  23   2              }
+  24   1      
+  25   1              return dat;
+  26   1      }
+  27          
+  28          
+  29          void main(void)
+  30          {
+  31   1              // Timer 1 set for baud generator
+  32   1              TMOD = 0x20; // Timer 1 mode 2 (8-bit auto-reload)
+  33   1              TH1 = 0xFD;  // Set reload value for timer 1
+  34   1              TL1 = 0xFD;      // Reload value for timer 1
+  35   1      
+  36   1              SCON = 0xC0; // Serial in mode 1, and reception is allowed
+  37   1              PCON = 0x00; // Baud rate set to 9600 bit/s
+  38   1      
+  39   1              TR1 = 1;         // Enable timer 1
+  40   1              REN = 1;         // Reception allowed
+  41   1      
+  42   1              while(1)
+  43   1              {
+  44   2                      P1 = recive();
+  45   2              }
+  46   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     44    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+C51 COMPILER V9.01   U1_EX52_RECEIVE                                                       08/02/2024 16:19:26 PAGE 2   
+
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

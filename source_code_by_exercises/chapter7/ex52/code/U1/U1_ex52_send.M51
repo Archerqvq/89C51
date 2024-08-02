@@ -1,4 +1,4 @@
-BL51 BANKED LINKER/LOCATER V6.22                                                        07/02/2024  15:17:38  PAGE 1
+BL51 BANKED LINKER/LOCATER V6.22                                                        08/02/2024  15:36:00  PAGE 1
 
 
 BL51 BANKED LINKER/LOCATER V6.22, INVOKED BY:
@@ -59,7 +59,7 @@ SYMBOL TABLE OF MODULE:  U1_ex52_send (?C_STARTUP)
   I:0008H         SEGMENT       ?STACK
   C:0000H         PUBLIC        ?C_STARTUP
   D:00E0H         SYMBOL        ACC
-BL51 BANKED LINKER/LOCATER V6.22                                                      07/02/2024  15:17:38  PAGE 2
+BL51 BANKED LINKER/LOCATER V6.22                                                      08/02/2024  15:36:00  PAGE 2
 
 
   D:00F0H         SYMBOL        B
@@ -114,51 +114,51 @@ SYMBOL TABLE OF MODULE:  U1_ex52_send (?C_STARTUP)
   C:0028H         LINE#         15
   C:0028H         LINE#         16
   C:0028H         LINE#         17
-  C:0029H         LINE#         18
-  C:002DH         LINE#         19
-  C:002FH         LINE#         21
-  C:0032H         LINE#         22
+  C:0029H         LINE#         20
+  C:002DH         LINE#         21
+  C:002FH         LINE#         23
   C:0032H         LINE#         24
-BL51 BANKED LINKER/LOCATER V6.22                                                      07/02/2024  15:17:38  PAGE 3
-
-
   C:0032H         LINE#         26
-  C:0034H         LINE#         27
+BL51 BANKED LINKER/LOCATER V6.22                                                      08/02/2024  15:36:00  PAGE 3
+
+
+  C:0032H         LINE#         28
+  C:0034H         LINE#         29
   -------         ENDPROC       _SEND
   -------         PROC          DELAY
   -------         DO            
   D:0007H         SYMBOL        m
   D:0006H         SYMBOL        n
   -------         ENDDO         
-  C:0035H         LINE#         29
-  C:0035H         LINE#         30
-  C:0035H         LINE#         33
-  C:0037H         LINE#         34
-  C:0037H         LINE#         35
-  C:0039H         LINE#         36
+  C:0035H         LINE#         31
+  C:0035H         LINE#         32
+  C:0035H         LINE#         35
+  C:0037H         LINE#         36
+  C:0037H         LINE#         37
   C:0039H         LINE#         38
-  C:003DH         LINE#         39
-  C:0041H         LINE#         40
+  C:0039H         LINE#         40
+  C:003DH         LINE#         41
+  C:0041H         LINE#         42
   -------         ENDPROC       DELAY
   -------         PROC          MAIN
   -------         DO            
   D:0005H         SYMBOL        i
   -------         ENDDO         
-  C:0003H         LINE#         42
-  C:0003H         LINE#         43
-  C:0003H         LINE#         46
-  C:0006H         LINE#         47
-  C:0009H         LINE#         48
-  C:000CH         LINE#         49
-  C:000FH         LINE#         50
-  C:0012H         LINE#         51
-  C:0014H         LINE#         53
-  C:0014H         LINE#         54
-  C:0014H         LINE#         55
-  C:0016H         LINE#         56
-  C:0016H         LINE#         57
-  C:001FH         LINE#         58
-  C:0022H         LINE#         59
+  C:0003H         LINE#         44
+  C:0003H         LINE#         45
+  C:0003H         LINE#         48
+  C:0006H         LINE#         49
+  C:0009H         LINE#         50
+  C:000CH         LINE#         52
+  C:000FH         LINE#         53
+  C:0012H         LINE#         55
+  C:0014H         LINE#         57
+  C:0014H         LINE#         58
+  C:0014H         LINE#         59
+  C:0016H         LINE#         60
+  C:0016H         LINE#         61
+  C:001FH         LINE#         62
+  C:0022H         LINE#         63
   -------         ENDPROC       MAIN
   -------         ENDMOD        U1_EX52_SEND
 

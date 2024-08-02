@@ -1,0 +1,67 @@
+<html>
+<body>
+<pre>
+<h1>µVision Build Log</h1>
+<h2>Project:</h2>
+C:\Users\Achar\Desktop\Notes\proteus\source_code_by_exercises\chapter7\ex52\code\U2\U2_ex52_receive.uvproj
+Project File Date:  08/02/2024
+
+<h2>Output:</h2>
+Build target 'Target 1'
+assembling STARTUP.A51...
+compiling U1_ex52_receive.c...
+U1_EX52_RECEIVE.C(5): error C141: syntax error near 'PSW', expected 'const'
+Target not created
+Build target 'Target 1'
+assembling STARTUP.A51...
+compiling U1_ex52_receive.c...
+U1_EX52_RECEIVE.C(5): error C141: syntax error near 'sfr'
+U1_EX52_RECEIVE.C(5): error C141: syntax error near 'PSW', expected 'const'
+Target not created
+Build target 'Target 1'
+compiling U1_ex52_receive.c...
+U1_EX52_RECEIVE.C(5): error C141: syntax error near 'sfr'
+U1_EX52_RECEIVE.C(5): error C141: syntax error near 'PSW', expected 'const'
+Target not created
+Build target 'Target 1'
+compiling U1_ex52_receive.c...
+U1_EX52_RECEIVE.C(5): error C141: syntax error near 'PSW', expected 'const'
+Target not created
+Build target 'Target 1'
+compiling U1_ex52_receive.c...
+U1_EX52_RECEIVE.C(5): error C247: non-address/-constant initializer
+Target not created
+Build target 'Target 1'
+compiling U1_ex52_receive.c...
+U1_EX52_RECEIVE.C(5): error C247: non-address/-constant initializer
+Target not created
+Build target 'Target 1'
+compiling U1_ex52_receive.c...
+linking...
+Program Size: data=9.0 xdata=0 code=16
+creating hex file from "U2_ex52_receive"...
+"U2_ex52_receive" - 0 Error(s), 0 Warning(s).
+Build target 'Target 1'
+compiling U1_ex52_receive.c...
+U1_EX52_RECEIVE.C(5): error C247: non-address/-constant initializer
+Target not created
+Build target 'Target 1'
+compiling U1_ex52_receive.c...
+U1_EX52_RECEIVE.C(5): error C247: non-address/-constant initializer
+Target not created
+Build target 'Target 1'
+compiling U1_ex52_receive.c...
+U1_EX52_RECEIVE.C(5): error C247: non-address/-constant initializer
+Target not created
+Build target 'Target 1'
+compiling U1_ex52_receive.c...
+linking...
+Program Size: data=9.0 xdata=0 code=58
+creating hex file from "U2_ex52_receive"...
+"U2_ex52_receive" - 0 Error(s), 0 Warning(s).
+Build target 'Target 1'
+compiling U1_ex52_receive.c...
+linking...
+Program Size: data=9.0 xdata=0 code=59
+creating hex file from "U2_ex52_receive"...
+"U2_ex52_receive" - 0 Error(s), 0 Warning(s).

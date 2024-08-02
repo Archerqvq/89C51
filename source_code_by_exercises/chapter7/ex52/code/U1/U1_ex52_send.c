@@ -45,11 +45,13 @@ void main(void)
 {
 	unsigned char i;
 
-	TMOD = 0x20; // Timer 1 in method 2
-	SCON = 0xC0; // Serial port in method 3
+	TMOD = 0x20; // Timer 1 mode 2 (8-bit auto-reload)
+	TH1 = 0xFD;	 // Set reload value for Timer 1
+	TL1 = 0xFD;  // Reload value for Timer 1
+
+	SCON = 0xC0; // Serial port in mode 3
 	PCON = 0x00; // Baud rate 9600bit/s
-	TH1 = 0xFD;	 // Initialize high 8-bits of timer 1
-	TL1 = 0xFD;  // Initialize low 8-bits of timer 1
+
 	TR1 = 1;     // Timer 1 activated
 
 	while(1)

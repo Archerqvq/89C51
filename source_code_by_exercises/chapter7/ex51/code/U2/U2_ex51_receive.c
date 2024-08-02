@@ -7,7 +7,7 @@ unsigned char receive(void)
 {
 	unsigned char dat;
 
-	// Wait until receive is done, then RI set to 1
+	// Wait until receive is done, then RI set to 1, which means that 1 byte data has been received
 	while(RI == 0)
 	{
 		;
@@ -21,9 +21,9 @@ unsigned char receive(void)
 
 void main(void)
 {
-	TMOD = 0x20; // Timer 1 in method 2
-	TH1 = 0xFD;	 // Initialize high 8-bits of timer 1
-	TL1 = 0xFD;  // Initialize low 8-bits of timer 1
+	TMOD = 0x20; // Timer 1 mode 2 (8-bit auto-reload)
+	TH1 = 0xFD;	 // Set reload value for Timer 1
+	TL1 = 0xFD;  // Reload value for Timer 1
 
 	SCON = 0x50; // Serial port in method 1, reception is allowed
 	PCON = 0x00; // Baud rate it 9600bit/s
