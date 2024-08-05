@@ -1,0 +1,59 @@
+C51 COMPILER V9.01   EX58                                                                  08/05/2024 11:31:08 PAGE 1   
+
+
+C51 COMPILER V9.01, COMPILATION OF MODULE EX58
+OBJECT MODULE PLACED IN ex58.OBJ
+COMPILER INVOKED BY: C:\Keil_v5_C51\C51\BIN\C51.EXE ex58.c BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          // example 57:
+   2          // Digital tube fast dynamic scan shows the number "1234"
+   3          #include <reg51.h>
+   4          
+   5          void delay(void) // delay around 0.6ms
+   6          {                                         
+   7   1              unsigned char i;
+   8   1      
+   9   1              for(i = 0; i < 1000; i++)
+  10   1              {
+  11   2              }
+  12   1      }
+  13          
+  14          void main(void)
+  15          {
+  16   1              while(1)
+  17   1              {
+  18   2                      P2 = 0xFE; // P2.0 output low level, DS0 is enabled
+  19   2                      P0 = 0xF9; // number 1
+  20   2                      delay();
+  21   2      
+  22   2                      P2 = 0xFD; // P2.1 output low lelve, DS1 is enabled
+  23   2                      P0 = 0xA4; // number 2
+  24   2                      delay();
+  25   2      
+  26   2                      P2 = 0xFB; // P2.2 output low lelve, DS2 is enabled
+  27   2                      P0 = 0xB0; // number 3
+  28   2                      delay();
+  29   2      
+  30   2                      P2 = 0xF7; // P2.3 output low lelve, DS3 is enabled
+  31   2                      P0 = 0x99; // number 4
+  32   2                      delay();
+  33   2      
+  34   2                      P2 = 0xFF; // Disable all ds
+  35   2              }       
+  36   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     57    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

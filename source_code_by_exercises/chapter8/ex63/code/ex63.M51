@@ -1,0 +1,171 @@
+BL51 BANKED LINKER/LOCATER V6.22                                                        08/05/2024  15:39:31  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V6.22, INVOKED BY:
+C:\KEIL_V5_C51\C51\BIN\BL51.EXE STARTUP.obj, ex63.obj TO ex63
+
+
+MEMORY MODEL: SMALL
+
+
+INPUT MODULES INCLUDED:
+  STARTUP.obj (?C_STARTUP)
+  ex63.obj (EX63)
+
+
+LINK MAP OF MODULE:  ex63 (?C_STARTUP)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+            REG     0008H     0008H     ABSOLUTE     "REG BANK 1"
+            DATA    0010H     0001H     UNIT         ?DT?EX63
+            IDATA   0011H     0001H     UNIT         ?STACK
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0003H     ABSOLUTE     
+                    0003H     0008H                  *** GAP ***
+            CODE    000BH     0003H     ABSOLUTE     
+            CODE    000EH     0035H     UNIT         ?PR?MAIN?EX63
+            CODE    0043H     0026H     UNIT         ?PR?INTERSEV?EX63
+            CODE    0069H     000DH     UNIT         ?PR?DELAY?EX63
+            CODE    0076H     000CH     UNIT         ?C_C51STARTUP
+
+
+
+OVERLAY MAP OF MODULE:   ex63 (?C_STARTUP)
+
+
+SEGMENT
+  +--> CALLED SEGMENT
+---------------------
+?C_C51STARTUP
+  +--> ?PR?MAIN?EX63
+
+*** NEW ROOT ***************************************************
+
+?PR?INTERSEV?EX63
+  +--> ?PR?DELAY?EX63
+
+
+
+SYMBOL TABLE OF MODULE:  ex63 (?C_STARTUP)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        ?C_STARTUP
+  C:0076H         SEGMENT       ?C_C51STARTUP
+BL51 BANKED LINKER/LOCATER V6.22                                                      08/05/2024  15:39:31  PAGE 2
+
+
+  I:0011H         SEGMENT       ?STACK
+  C:0000H         PUBLIC        ?C_STARTUP
+  D:00E0H         SYMBOL        ACC
+  D:00F0H         SYMBOL        B
+  D:0083H         SYMBOL        DPH
+  D:0082H         SYMBOL        DPL
+  N:0000H         SYMBOL        IBPSTACK
+  N:0100H         SYMBOL        IBPSTACKTOP
+  N:0080H         SYMBOL        IDATALEN
+  C:0079H         SYMBOL        IDATALOOP
+  N:0000H         SYMBOL        PBPSTACK
+  N:0100H         SYMBOL        PBPSTACKTOP
+  N:0000H         SYMBOL        PDATALEN
+  N:0000H         SYMBOL        PDATASTART
+  N:0000H         SYMBOL        PPAGE
+  N:0000H         SYMBOL        PPAGEENABLE
+  D:00A0H         SYMBOL        PPAGE_SFR
+  D:0081H         SYMBOL        SP
+  C:0076H         SYMBOL        STARTUP1
+  N:0000H         SYMBOL        XBPSTACK
+  N:0000H         SYMBOL        XBPSTACKTOP
+  N:0000H         SYMBOL        XDATALEN
+  N:0000H         SYMBOL        XDATASTART
+  C:0000H         LINE#         126
+  C:0076H         LINE#         133
+  C:0078H         LINE#         134
+  C:0079H         LINE#         135
+  C:007AH         LINE#         136
+  C:007CH         LINE#         185
+  C:007FH         LINE#         196
+  -------         ENDMOD        ?C_STARTUP
+
+  -------         MODULE        EX63
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  D:0090H         PUBLIC        P1
+  D:00B0H         PUBLIC        P3
+  B:0090H.4       PUBLIC        S1
+  B:00A8H.7       PUBLIC        EA
+  D:0010H         PUBLIC        ID
+  C:0069H         PUBLIC        delay
+  C:000EH         PUBLIC        main
+  D:0089H         PUBLIC        TMOD
+  B:00A8H.1       PUBLIC        ET0
+  D:008CH         PUBLIC        TH0
+  D:008AH         PUBLIC        TL0
+  B:0088H.4       PUBLIC        TR0
+  C:0043H         PUBLIC        intersev
+  -------         PROC          DELAY
+  -------         DO            
+  D:0007H         SYMBOL        i
+  D:0006H         SYMBOL        j
+  -------         ENDDO         
+  C:0069H         LINE#         9
+  C:0069H         LINE#         10
+  C:0069H         LINE#         12
+  C:006BH         LINE#         13
+  C:006BH         LINE#         14
+BL51 BANKED LINKER/LOCATER V6.22                                                      08/05/2024  15:39:31  PAGE 3
+
+
+  C:006DH         LINE#         15
+  C:006DH         LINE#         16
+  C:0071H         LINE#         17
+  C:0075H         LINE#         18
+  -------         ENDPROC       DELAY
+  -------         PROC          MAIN
+  C:000EH         LINE#         20
+  C:000EH         LINE#         21
+  C:000EH         LINE#         22
+  C:0011H         LINE#         23
+  C:0013H         LINE#         24
+  C:0015H         LINE#         25
+  C:0017H         LINE#         26
+  C:001AH         LINE#         27
+  C:001DH         LINE#         29
+  C:0020H         LINE#         30
+  C:0020H         LINE#         31
+  C:0020H         LINE#         32
+  C:002FH         LINE#         33
+  C:002FH         LINE#         34
+  C:0034H         LINE#         35
+  C:0039H         LINE#         36
+  C:003EH         LINE#         37
+  -------         ENDPROC       MAIN
+  -------         PROC          INTERSEV
+  C:0043H         LINE#         43
+  C:004AH         LINE#         45
+  C:004CH         LINE#         46
+  C:004FH         LINE#         48
+  C:0052H         LINE#         49
+  C:0052H         LINE#         50
+  C:0055H         LINE#         51
+  C:0058H         LINE#         52
+  C:0058H         LINE#         53
+  C:005AH         LINE#         54
+  C:005AH         LINE#         55
+  C:005AH         LINE#         57
+  C:005FH         LINE#         58
+  C:005FH         LINE#         59
+  C:0062H         LINE#         60
+  C:0062H         LINE#         62
+  C:0064H         LINE#         63
+  -------         ENDPROC       INTERSEV
+  -------         ENDMOD        EX63
+
+Program Size: data=18.0 xdata=0 code=122
+LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)

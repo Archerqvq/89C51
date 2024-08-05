@@ -1,0 +1,32 @@
+C51 COMPILER V9.01   EX55                                                                  08/05/2024 10:50:28 PAGE 1   
+
+
+C51 COMPILER V9.01, COMPILATION OF MODULE EX55
+OBJECT MODULE PLACED IN ex55.OBJ
+COMPILER INVOKED BY: C:\Keil_v5_C51\C51\BIN\C51.EXE ex55.c BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          // example 55:
+   2          // The numbers are displayed through a common anode digital tube
+   3          #include <REG51.H>
+   4          
+   5          void main(void)
+   6          {
+   7   1              P2 = 0xFE; // P2.0 output low level, Q1 is available
+   8   1              P0 = 0x92; // P0 output number 5
+   9   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =      7    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

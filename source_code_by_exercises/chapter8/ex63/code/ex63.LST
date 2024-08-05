@@ -1,0 +1,88 @@
+C51 COMPILER V9.01   EX63                                                                  08/05/2024 15:39:31 PAGE 1   
+
+
+C51 COMPILER V9.01, COMPILATION OF MODULE EX63
+OBJECT MODULE PLACED IN ex63.OBJ
+COMPILER INVOKED BY: C:\Keil_v5_C51\C51\BIN\C51.EXE ex63.c BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          // example 63:
+   2          // Expansion of the key functions: one key for four functions
+   3          #include <reg51.h>
+   4          
+   5          unsigned char ID;
+   6          sbit S1 = P1^4;
+   7          
+   8          // it requires about 200ms to delay for just one key scaning
+   9          void delay(void)
+  10          {
+  11   1          unsigned char i, j;
+  12   1          for(i = 0; i < 200; i++)
+  13   1          {
+  14   2              for(j = 0; j < 100; j++)
+  15   2              {
+  16   3              }
+  17   2          }
+  18   1      }
+  19          
+  20          void main(void)
+  21          {
+  22   1          TMOD = 0x02; // timer 0 in mode 2
+  23   1          EA = 1;      // global interrupt enable
+  24   1          ET0 = 1;     // t0 interrupt enable
+  25   1          TR0 = 1;     // enable t0
+  26   1          TH0 = 256 - 200; // initialized value, 200us for 1 interrupt request
+  27   1          TL0 = 256 - 200; // auto-reload value
+  28   1      
+  29   1          ID = 0;
+  30   1          while(1)
+  31   1          {
+  32   2              switch(ID)
+  33   2              {
+  34   3                  case 0: P3 = 0xFE; break;
+  35   3                  case 1: P3 = 0xFD; break;
+  36   3                  case 2: P3 = 0xFB; break;
+  37   3                  case 3: P3 = 0xF7; break;        
+  38   3              }
+  39   2          }
+  40   1      }
+  41          
+  42          // interrupt service for timer 0 to scaning keyboard
+  43          void intersev(void) interrupt 1 using 1
+  44          {
+  45   1          TR0 = 0; // disable timer 0
+  46   1          P1 = 0xFF; // reset key status
+  47   1          
+  48   1          if(S1 == 0)
+  49   1          {
+  50   2              delay();
+  51   2              if(S1 == 0)
+  52   2              {
+  53   3                  ID += 1;
+  54   3              }
+  55   2          }  
+C51 COMPILER V9.01   EX63                                                                  08/05/2024 15:39:31 PAGE 2   
+
+  56   1      
+  57   1          if(ID == 4)
+  58   1          {
+  59   2              ID = 0;
+  60   2          }
+  61   1      
+  62   1          TR0 = 1; // enable timer 0
+  63   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    104    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      1    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

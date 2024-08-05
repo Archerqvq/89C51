@@ -1,5 +1,5 @@
 // example 54:
-// Receive date from pc to mcu
+// Receive data from pc to mcu
 // NOTE: this example should be run on the real dev borad
 
 #include <REG51.H>

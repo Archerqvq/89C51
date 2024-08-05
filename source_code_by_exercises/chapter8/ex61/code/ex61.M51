@@ -1,0 +1,269 @@
+BL51 BANKED LINKER/LOCATER V6.22                                                        08/05/2024  15:01:10  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V6.22, INVOKED BY:
+C:\KEIL_V5_C51\C51\BIN\BL51.EXE STARTUP.obj, ex61.obj TO ex61
+
+
+MEMORY MODEL: SMALL
+
+
+INPUT MODULES INCLUDED:
+  STARTUP.obj (?C_STARTUP)
+  ex61.obj (EX61)
+
+
+LINK MAP OF MODULE:  ex61 (?C_STARTUP)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+            DATA    0008H     0001H     UNIT         ?DT?EX61
+            IDATA   0009H     0001H     UNIT         ?STACK
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0003H     ABSOLUTE     
+            CODE    0003H     0030H     UNIT         ?PR?FORWARD?EX61
+            CODE    0033H     002AH     UNIT         ?PR?BACKWARD?EX61
+            CODE    005DH     002AH     UNIT         ?PR?MAIN?EX61
+            CODE    0087H     0024H     UNIT         ?PR?KEY_SCAN?EX61
+            CODE    00ABH     0013H     UNIT         ?PR?LED_DELAY?EX61
+            CODE    00BEH     000DH     UNIT         ?PR?DELAY20MS?EX61
+            CODE    00CBH     000CH     UNIT         ?C_C51STARTUP
+            CODE    00D7H     000CH     UNIT         ?PR?FLASH?EX61
+            CODE    00E3H     0004H     UNIT         ?PR?STOP?EX61
+
+
+
+OVERLAY MAP OF MODULE:   ex61 (?C_STARTUP)
+
+
+SEGMENT
+  +--> CALLED SEGMENT
+---------------------
+?C_C51STARTUP
+  +--> ?PR?MAIN?EX61
+
+?PR?MAIN?EX61
+  +--> ?PR?KEY_SCAN?EX61
+  +--> ?PR?FORWARD?EX61
+  +--> ?PR?BACKWARD?EX61
+  +--> ?PR?STOP?EX61
+  +--> ?PR?FLASH?EX61
+
+?PR?KEY_SCAN?EX61
+  +--> ?PR?DELAY20MS?EX61
+
+?PR?FORWARD?EX61
+  +--> ?PR?LED_DELAY?EX61
+BL51 BANKED LINKER/LOCATER V6.22                                                      08/05/2024  15:01:10  PAGE 2
+
+
+
+?PR?BACKWARD?EX61
+  +--> ?PR?LED_DELAY?EX61
+
+?PR?FLASH?EX61
+  +--> ?PR?LED_DELAY?EX61
+
+
+
+SYMBOL TABLE OF MODULE:  ex61 (?C_STARTUP)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        ?C_STARTUP
+  C:00CBH         SEGMENT       ?C_C51STARTUP
+  I:0009H         SEGMENT       ?STACK
+  C:0000H         PUBLIC        ?C_STARTUP
+  D:00E0H         SYMBOL        ACC
+  D:00F0H         SYMBOL        B
+  D:0083H         SYMBOL        DPH
+  D:0082H         SYMBOL        DPL
+  N:0000H         SYMBOL        IBPSTACK
+  N:0100H         SYMBOL        IBPSTACKTOP
+  N:0080H         SYMBOL        IDATALEN
+  C:00CEH         SYMBOL        IDATALOOP
+  N:0000H         SYMBOL        PBPSTACK
+  N:0100H         SYMBOL        PBPSTACKTOP
+  N:0000H         SYMBOL        PDATALEN
+  N:0000H         SYMBOL        PDATASTART
+  N:0000H         SYMBOL        PPAGE
+  N:0000H         SYMBOL        PPAGEENABLE
+  D:00A0H         SYMBOL        PPAGE_SFR
+  D:0081H         SYMBOL        SP
+  C:00CBH         SYMBOL        STARTUP1
+  N:0000H         SYMBOL        XBPSTACK
+  N:0000H         SYMBOL        XBPSTACKTOP
+  N:0000H         SYMBOL        XDATALEN
+  N:0000H         SYMBOL        XDATASTART
+  C:0000H         LINE#         126
+  C:00CBH         LINE#         133
+  C:00CDH         LINE#         134
+  C:00CEH         LINE#         135
+  C:00CFH         LINE#         136
+  C:00D1H         LINE#         185
+  C:00D4H         LINE#         196
+  -------         ENDMOD        ?C_STARTUP
+
+  -------         MODULE        EX61
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  D:0090H         PUBLIC        P1
+  D:00B0H         PUBLIC        P3
+  B:0090H.4       PUBLIC        S1
+  B:0090H.5       PUBLIC        S2
+  B:0090H.6       PUBLIC        S3
+  B:0090H.7       PUBLIC        S4
+  D:0008H         PUBLIC        keyval
+BL51 BANKED LINKER/LOCATER V6.22                                                      08/05/2024  15:01:10  PAGE 3
+
+
+  C:00D7H         PUBLIC        flash
+  C:005DH         PUBLIC        main
+  C:00B1H         PUBLIC        led_delay
+  C:0033H         PUBLIC        backward
+  C:00E3H         PUBLIC        stop
+  C:0087H         PUBLIC        key_scan
+  C:00BEH         PUBLIC        delay20ms
+  C:0003H         PUBLIC        forward
+  -------         PROC          L?0033
+  -------         ENDPROC       L?0033
+  -------         PROC          LED_DELAY
+  -------         DO            
+  D:0007H         SYMBOL        i
+  D:0006H         SYMBOL        j
+  -------         ENDDO         
+  C:00B1H         LINE#         12
+  C:00B1H         LINE#         13
+  C:00B1H         LINE#         16
+  C:00B3H         LINE#         17
+  C:00B3H         LINE#         18
+  C:00B5H         LINE#         19
+  C:00B5H         LINE#         21
+  C:00B9H         LINE#         22
+  C:00BDH         LINE#         23
+  -------         ENDPROC       LED_DELAY
+  -------         PROC          DELAY20MS
+  -------         DO            
+  D:0007H         SYMBOL        i
+  D:0006H         SYMBOL        j
+  -------         ENDDO         
+  C:00BEH         LINE#         26
+  C:00BEH         LINE#         27
+  C:00BEH         LINE#         30
+  C:00C0H         LINE#         31
+  C:00C0H         LINE#         32
+  C:00C2H         LINE#         33
+  C:00C2H         LINE#         35
+  C:00C6H         LINE#         36
+  C:00CAH         LINE#         37
+  -------         ENDPROC       DELAY20MS
+  -------         PROC          FORWARD
+  C:0003H         LINE#         40
+  C:0003H         LINE#         41
+  C:0003H         LINE#         42
+  C:0006H         LINE#         43
+  C:0006H         LINE#         44
+  C:0006H         LINE#         45
+  C:0009H         LINE#         46
+  C:000CH         LINE#         47
+  C:000FH         LINE#         48
+  C:0012H         LINE#         49
+  C:0015H         LINE#         50
+  C:0018H         LINE#         51
+  C:001BH         LINE#         52
+  C:001EH         LINE#         53
+  C:0021H         LINE#         54
+  C:0024H         LINE#         55
+BL51 BANKED LINKER/LOCATER V6.22                                                      08/05/2024  15:01:10  PAGE 4
+
+
+  C:0027H         LINE#         56
+  C:002AH         LINE#         57
+  C:002DH         LINE#         58
+  C:0030H         LINE#         59
+  -------         ENDPROC       FORWARD
+  -------         PROC          BACKWARD
+  C:0033H         LINE#         63
+  C:0033H         LINE#         64
+  C:0033H         LINE#         65
+  C:0036H         LINE#         66
+  C:0039H         LINE#         67
+  C:003CH         LINE#         68
+  C:003FH         LINE#         69
+  C:0042H         LINE#         70
+  C:0045H         LINE#         71
+  C:0048H         LINE#         72
+  C:004BH         LINE#         73
+  C:004EH         LINE#         74
+  C:0051H         LINE#         75
+  C:0054H         LINE#         76
+  C:0054H         LINE#         77
+  C:0054H         LINE#         78
+  C:0057H         LINE#         79
+  C:005AH         LINE#         80
+  -------         ENDPROC       BACKWARD
+  -------         PROC          STOP
+  C:00E3H         LINE#         84
+  C:00E3H         LINE#         85
+  C:00E3H         LINE#         86
+  C:00E6H         LINE#         87
+  -------         ENDPROC       STOP
+  -------         PROC          FLASH
+  C:00D7H         LINE#         90
+  C:00D7H         LINE#         91
+  C:00D7H         LINE#         92
+  C:00DAH         LINE#         93
+  C:00DDH         LINE#         94
+  C:00E0H         LINE#         95
+  -------         ENDPROC       FLASH
+  -------         PROC          KEY_SCAN
+  C:0087H         LINE#         99
+  C:0087H         LINE#         100
+  C:0087H         LINE#         102
+  C:008FH         LINE#         103
+  C:008FH         LINE#         104
+  C:0092H         LINE#         106
+  C:0095H         LINE#         107
+  C:0095H         LINE#         108
+  C:0098H         LINE#         109
+  C:0098H         LINE#         110
+  C:009BH         LINE#         111
+  C:009BH         LINE#         112
+  C:009EH         LINE#         113
+  C:009EH         LINE#         114
+  C:00A1H         LINE#         115
+  C:00A1H         LINE#         116
+  C:00A4H         LINE#         117
+BL51 BANKED LINKER/LOCATER V6.22                                                      08/05/2024  15:01:10  PAGE 5
+
+
+  C:00A4H         LINE#         118
+  C:00A7H         LINE#         119
+  C:00A7H         LINE#         120
+  C:00AAH         LINE#         121
+  C:00AAH         LINE#         122
+  C:00AAH         LINE#         123
+  -------         ENDPROC       KEY_SCAN
+  -------         PROC          MAIN
+  C:005DH         LINE#         125
+  C:005DH         LINE#         126
+  C:005DH         LINE#         127
+  C:0060H         LINE#         130
+  C:0060H         LINE#         131
+  C:0060H         LINE#         132
+  C:0063H         LINE#         134
+  C:0073H         LINE#         135
+  C:0073H         LINE#         136
+  C:0078H         LINE#         137
+  C:007DH         LINE#         138
+  C:0082H         LINE#         139
+  -------         ENDPROC       MAIN
+  -------         ENDMOD        EX61
+
+Program Size: data=10.0 xdata=0 code=231
+LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)

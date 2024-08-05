@@ -1,0 +1,169 @@
+C51 COMPILER V9.01   EX61                                                                  08/05/2024 15:01:06 PAGE 1   
+
+
+C51 COMPILER V9.01, COMPILATION OF MODULE EX61
+OBJECT MODULE PLACED IN ex61.OBJ
+COMPILER INVOKED BY: C:\Keil_v5_C51\C51\BIN\C51.EXE ex61.c BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          // example 61:
+   2          // CPU-controlled keyboard scan experiments
+   3          #include <reg51.h>
+   4          
+   5          sbit S1 = P1^4; // s1 as p1.4
+   6          sbit S2 = P1^5; // s2 as p1.5
+   7          sbit S3 = P1^6; // s3 as p1.6
+   8          sbit S4 = P1^7; // s4 as p1.7
+   9          unsigned char keyval; // to store key value
+  10          
+  11          // delay for led display
+  12          void led_delay(void)
+  13          {
+  14   1          unsigned char i, j;
+  15   1      
+  16   1          for(i = 0; i < 250; i++)
+  17   1          {
+  18   2              for(j = 0; j < 250; j++)
+  19   2              {
+  20   3              
+  21   3              }
+  22   2          }
+  23   1      }
+  24          
+  25          // delay for key debouncing
+  26          void delay20ms(void)
+  27          {
+  28   1          unsigned char i, j;
+  29   1      
+  30   1          for(i = 0; i < 100; i++)
+  31   1          {
+  32   2              for(j = 0; j < 60; j++)
+  33   2              {
+  34   3              
+  35   3              }
+  36   2          }    
+  37   1      }
+  38          
+  39          // The forward flow light lights up the LED
+  40          void forward(void)
+  41          {
+  42   1          P3 = 0xFE; // lights up the first light
+  43   1          led_delay();
+  44   1          P3 = 0xFD; // lights up the second light
+  45   1          led_delay();
+  46   1          P3 = 0xFB; // lights up the third light
+  47   1          led_delay();
+  48   1          P3 = 0xF7; // lights up the fourth light
+  49   1          led_delay();
+  50   1          P3 = 0xEF; // lights up the fifth light
+  51   1          led_delay();
+  52   1          P3 = 0xDF; // lights up the sixth light
+  53   1          led_delay();
+  54   1          P3 = 0xBF; // lights up the seventh light
+  55   1          led_delay();
+C51 COMPILER V9.01   EX61                                                                  08/05/2024 15:01:06 PAGE 2   
+
+  56   1          P3 = 0x7F; // lights up the eight light
+  57   1          led_delay();
+  58   1          P3 = 0xFE; // lights up the first light
+  59   1          led_delay();  
+  60   1      }
+  61          
+  62          // The backward flow light lights up the LED
+  63          void backward(void)
+  64          {
+  65   1          P3 = 0x7F; // lights up the eight light
+  66   1          led_delay();
+  67   1          P3 = 0xBF; // lights up the seventh light
+  68   1          led_delay();
+  69   1          P3 = 0xDF; // lights up the sixth light
+  70   1          led_delay();
+  71   1          P3 = 0xEF; // lights up the fifth light
+  72   1          led_delay();
+  73   1          P3 = 0xF7; // lights up the fourth light
+  74   1          led_delay();
+  75   1          P3 = 0xFB; // lights up the third light
+  76   1          led_delay();
+  77   1          P3 = 0xFD; // lights up the second light
+  78   1          led_delay();
+  79   1          P3 = 0xFE; // lights up the first light
+  80   1          led_delay(); 
+  81   1      }
+  82          
+  83          // turn off all leds
+  84          void stop(void)
+  85          {
+  86   1          P3 = 0xFF;
+  87   1      }
+  88          
+  89          // turn on-off leds
+  90          void flash(void)
+  91          {
+  92   1          P3 = 0xFF; // turn off all leds
+  93   1          led_delay(); 
+  94   1          P3 = 0x00; // lights up all leds
+  95   1          led_delay();
+  96   1      }
+  97          
+  98          // keyboard scaning module
+  99          void key_scan(void)
+ 100          {
+ 101   1          // first time to detect whether the key is pressed
+ 102   1          if((P1&0xF0) != 0xF0)  
+ 103   1          {
+ 104   2              delay20ms();  // debouncing
+ 105   2      
+ 106   2              if(S1 == 0)
+ 107   2              {
+ 108   3                  keyval = 1;        
+ 109   3              }
+ 110   2              if(S2 == 0)
+ 111   2              {
+ 112   3                  keyval = 2;        
+ 113   3              }
+ 114   2              if(S3 == 0)
+ 115   2              {
+ 116   3                  keyval = 3;        
+ 117   3              }
+C51 COMPILER V9.01   EX61                                                                  08/05/2024 15:01:06 PAGE 3   
+
+ 118   2              if(S4 == 0)
+ 119   2              {
+ 120   3                  keyval = 4;        
+ 121   3              }
+ 122   2          }
+ 123   1      }
+ 124          
+ 125          void main(void)
+ 126          {
+ 127   1          keyval = 0; // default value of key, doing nothing
+ 128   1      
+ 129   1          // infinite loop, keyboard scaning by the control of cpu
+ 130   1          while(1)
+ 131   1          {
+ 132   2              key_scan();
+ 133   2              
+ 134   2              switch(keyval)
+ 135   2              {
+ 136   3                  case 1: forward(); break;
+ 137   3                  case 2: backward(); break;
+ 138   3                  case 3: stop(); break;
+ 139   3                  case 4: flash(); break;
+ 140   3              }    
+ 141   2          }
+ 142   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    216    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      1    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
