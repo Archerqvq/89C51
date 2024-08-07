@@ -1,0 +1,183 @@
+C51 COMPILER V9.01   EX65                                                                  08/06/2024 11:42:46 PAGE 1   
+
+
+C51 COMPILER V9.01, COMPILATION OF MODULE EX65
+OBJECT MODULE PLACED IN ex65.OBJ
+COMPILER INVOKED BY: C:\Keil_v5_C51\C51\BIN\C51.EXE ex65.c BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          // example 65:
+   2          // Matrix keyboard key values of the digital tube display experiment
+   3          
+   4          #include <reg51.h>
+   5          
+   6          // assignment for columns of matrix keyboard
+   7          sbit P14 = P1^4;
+   8          sbit P15 = P1^5;
+   9          sbit P16 = P1^6;
+  10          sbit P17 = P1^7;
+  11          
+  12          // digits displayed in digit tube from 0 to 9 
+  13          unsigned char code tab[] = {
+  14              0xC0, 0xF9, 0xA4, 0xB0, 0x99,
+  15              0x92, 0x82, 0xF8, 0x80, 0x90,
+  16          };
+  17          unsigned char keyval;
+  18          
+  19          // digital tube dynamic scaning delay
+  20          void led_delay(void)
+  21          {
+  22   1          unsigned char j;
+  23   1      
+  24   1          for(j = 0; j < 200; j++)
+  25   1          {
+  26   2          
+  27   2          }
+  28   1      }
+  29          
+  30          // key value display
+  31          void display(unsigned char k)
+  32          {
+  33   1          P2 = 0xBF; // enable digit tube DS6
+  34   1          P0 = tab[k/10]; // display tens
+  35   1          led_delay();
+  36   1      
+  37   1          P2 = 0x7F; // enable digit tube DS7
+  38   1          P0 = tab[k%10]; // display ones
+  39   1          led_delay();
+  40   1      }
+  41          
+  42          // delay 20ms
+  43          void delay20ms(void)
+  44          {
+  45   1          unsigned char i, j;
+  46   1      
+  47   1          for(i = 0; i < 100; i++)
+  48   1          {
+  49   2              for(j = 0; j < 60; j++)
+  50   2              {
+  51   3              }
+  52   2              _nop_();
+*** WARNING C206 IN LINE 52 OF EX65.C: '_nop_': missing function-prototype
+*** ERROR C264 IN LINE 52 OF EX65.C: intrinsic '_nop_': declaration/activation error
+  53   2          }
+C51 COMPILER V9.01   EX65                                                                  08/06/2024 11:42:46 PAGE 2   
+
+  54   1      }
+  55          
+  56          void main(void)
+  57          {
+  58   1          EA = 1; // enable global interrupt
+  59   1          ET0 = 1;// t0 interrupt allowed
+  60   1          TMOD = 0x01; // t0 in mode 1
+  61   1          TH0 = (65536 - 500) / 256; // high eight bits assignment of t0
+  62   1          TL0 = (65536 - 500) % 256; // low eight bits assignment of t0
+  63   1          TR0 = 1;// enable t0
+  64   1          keyval = 0x00; 
+  65   1      
+  66   1          while(1)
+  67   1          {
+  68   2            display(keyval);  
+  69   2          }
+  70   1      }
+  71          
+  72          // the interrupt code is 1 of timer 0
+  73          // and it uses the first register
+  74          void time0_interserve(void) interrupt 1 using 1  
+  75          {
+  76   1          TR0 = 0; // turn off timer 0
+  77   1          P1 = 0xF0; // all rows set to 1, and all columns set to 0
+  78   1      
+  79   1          if((P1&0xF0) != 0xF0) // button is hit when one of column equals 0
+  80   1          {
+  81   2              delay20ms();  
+  82   2          }
+  83   1      
+  84   1          if((P1&0xF0) != 0xF0) // confirmation of button press
+  85   1          {
+  86   2              P1 = 0xFE; // set the first row to 0  
+  87   2              // check each column's value 
+  88   2              if(P14 == 0)  // if p14 is euqal to 0, that means s1 pressed 
+  89   2              {
+  90   3                  keyval = 1;
+  91   3              }
+  92   2              if(P15 == 0)   
+  93   2              {
+  94   3                  keyval = 2;
+  95   3              }
+  96   2              if(P16 == 0)   
+  97   2              {
+  98   3                  keyval = 3;
+  99   3              }
+ 100   2              if(P17 == 0)   
+ 101   2              {
+ 102   3                  keyval = 4;
+ 103   3              }
+ 104   2      
+ 105   2              P1 = 0xFD; // set the second row to 0 
+ 106   2              if(P14 == 0)  // if p14 is euqal to 0, that means s5 pressed 
+ 107   2              {
+ 108   3                  keyval = 5;
+ 109   3              }
+ 110   2              if(P15 == 0)   
+ 111   2              {
+ 112   3                  keyval = 6;
+ 113   3              }
+ 114   2              if(P16 == 0)   
+ 115   2              {
+C51 COMPILER V9.01   EX65                                                                  08/06/2024 11:42:46 PAGE 3   
+
+ 116   3                  keyval = 7;
+ 117   3              }
+ 118   2              if(P17 == 0)   
+ 119   2              {
+ 120   3                  keyval = 8;
+ 121   3              }
+ 122   2      
+ 123   2              P1 = 0xFB; // set the third row to 0 
+ 124   2              if(P14 == 0)  // if p14 is euqal to 0, that means s9 pressed 
+ 125   2              {
+ 126   3                  keyval = 9;
+ 127   3              }
+ 128   2              if(P15 == 0)   
+ 129   2              {
+ 130   3                  keyval = 10;
+ 131   3              }
+ 132   2              if(P16 == 0)   
+ 133   2              {
+ 134   3                  keyval = 11;
+ 135   3              }
+ 136   2              if(P17 == 0)   
+ 137   2              {
+ 138   3                  keyval = 12;
+ 139   3              }
+ 140   2      
+ 141   2              P1 = 0xF7; // set the fourth row to 0 
+ 142   2              if(P14 == 0)  // if p14 is euqal to 0, that means s13 pressed 
+ 143   2              {
+ 144   3                  keyval = 13;
+ 145   3              }
+ 146   2              if(P15 == 0)   
+ 147   2              {
+ 148   3                  keyval = 14;
+ 149   3              }
+ 150   2              if(P16 == 0)   
+ 151   2              {
+ 152   3                  keyval = 15;
+ 153   3              }
+ 154   2              if(P17 == 0)   
+ 155   2              {
+ 156   3                  keyval = 16;
+ 157   3              }
+ 158   2      
+ 159   2          }
+ 160   1          
+ 161   1          TR0 = 1; // enable timer 0
+ 162   1          // reassignment of timer 0
+ 163   1          TH0 = (65536 - 500) / 256;
+ 164   1          TL0 = (65536 - 500) % 256;
+ 165   1      }
+ 166          
+
+C51 COMPILATION COMPLETE.  1 WARNING(S),  1 ERROR(S)

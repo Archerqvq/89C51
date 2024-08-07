@@ -1,0 +1,150 @@
+C51 COMPILER V9.01   EX64                                                                  08/06/2024 09:16:33 PAGE 1   
+
+
+C51 COMPILER V9.01, COMPILATION OF MODULE EX64
+OBJECT MODULE PLACED IN ex64.OBJ
+COMPILER INVOKED BY: C:\Keil_v5_C51\C51\BIN\C51.EXE ex64.c BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          // example 64:
+   2          // Stand-alone keypad controls stepper motor experiments
+   3          #include <reg51.h>
+   4          
+   5          sbit S1 = P1^4; // s1 as P1.4
+   6          sbit S2 = P1^5; // s2 as P1.5
+   7          sbit S3 = P1^6; // s3 as P1.6
+   8          
+   9          unsigned char keyval; // to store key value
+  10          unsigned char ID;     // to store function symbol
+  11          
+  12          // software debouncing
+  13          void delay(void)
+  14          {
+  15   1          unsigned char i, j;
+  16   1      
+  17   1          for(i = 0; i < 150; i++)
+  18   1          {
+  19   2              for(j = 0; j < 100; j++)
+  20   2              {
+  21   3              
+  22   3              }
+  23   2          }
+  24   1      }
+  25          
+  26          // The stepper motor rotates with a delay, and the longer the delay time, the slower the rotational speed
+  27          void motor_delay(void)
+  28          {
+  29   1          unsigned int i;
+  30   1          for(i = 0; i < 2000; i++)
+  31   1          {
+  32   2          
+  33   2          }
+  34   1      }
+  35          
+  36          // The stepper motor rotates forward
+  37          void forward(void)
+  38          {
+  39   1          P0 = 0xFC; // P0 low four-bit output ring pulse -> 1100
+  40   1          motor_delay();
+  41   1          P0 = 0xF6;  // P0 low four-bit output ring pulse -> 0110
+  42   1          motor_delay();
+  43   1          P0 = 0xF3; // 0011
+  44   1          motor_delay();
+  45   1          P0 = 0xF9;   // 1001
+  46   1          motor_delay();
+  47   1      }
+  48          
+  49          
+  50          // The stepper motro rotates backward
+  51          void backward(void)
+  52          {
+  53   1          P0 = 0xFC; // P0 low four-bit output ring pulse -> 1100
+  54   1          motor_delay();
+  55   1          P0 = 0xF9; // P0 low four-bit output ring pulse -> 1001
+C51 COMPILER V9.01   EX64                                                                  08/06/2024 09:16:33 PAGE 2   
+
+  56   1          motor_delay();
+  57   1          P0 = 0xF3; // P0 low four-bit output ring pulse -> 0011
+  58   1          motor_delay();
+  59   1          P0 = 0xF6; // P0 low four-bit output ring pulse -> 0110
+  60   1          motor_delay();    
+  61   1      } 
+  62          
+  63          // The stepper stop rotating
+  64          void stop(void)
+  65          {
+  66   1          P0 = 0xFF; // Stop output pulse
+  67   1      }
+  68          
+  69          void main(void)
+  70          {
+  71   1          TMOD = 0x01; // t0 in mode 1
+  72   1          EA = 1;      // enable global interrupt
+  73   1          ET0 = 1;     // t0 interrupt allowed
+  74   1          TR0 = 1;     // t0 enabled
+  75   1      
+  76   1          TH0 = (65536 - 200) / 256; // t0 assignment, every 200 counts generate interrupt
+  77   1          TL0 = (65536 - 200) % 256; // t0 assignment
+  78   1          keyval = 0; 
+  79   1          ID = 0;  // function sysmbol assgian to 0
+  80   1      
+  81   1          while(1)
+  82   1          {
+  83   2              switch(keyval)
+  84   2              {
+  85   3                   case 1: forward(); break;
+  86   3                   case 2: backward(); break;
+  87   3                   case 3: stop();     break;
+  88   3      
+  89   3              }
+  90   2          }
+  91   1      }
+  92          
+  93          // t0 interrupt service request
+  94          void timer0_serve(void) interrupt 1 using 1
+  95          {
+  96   1           TR0 = 0; // stop t0
+  97   1      
+  98   1           if((P1&0xF0) != 0xF0) // key pressed detected
+  99   1           {
+ 100   2              delay(); // debouncing
+ 101   2      
+ 102   2              if((P1&0xF0) != 0xF0) // key pressed confirmation
+ 103   2              {
+ 104   3                  if(S1 == 0) // if key actually pressed
+ 105   3                  {
+ 106   4                      keyval = 1;
+ 107   4                  }
+ 108   3                  if(S2 == 0) // if key actually pressed
+ 109   3                  {
+ 110   4                      keyval = 2;
+ 111   4                  }
+ 112   3                  if(S3 == 0) // if key actually pressed
+ 113   3                  {
+ 114   4                      keyval = 3;
+ 115   4                  }
+ 116   3              }
+ 117   2           }
+C51 COMPILER V9.01   EX64                                                                  08/06/2024 09:16:33 PAGE 3   
+
+ 118   1      
+ 119   1          TH0 = (65536 - 200) / 256; // t0 reassignment, every 200 counts generate interrupt
+ 120   1          TL0 = (65536 - 200) % 256; // t0 reassignment
+ 121   1      
+ 122   1          TR0 = 1; // enable t0
+ 123   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    181    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      2    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

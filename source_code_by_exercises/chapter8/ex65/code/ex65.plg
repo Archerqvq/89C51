@@ -1,0 +1,66 @@
+<html>
+<body>
+<pre>
+<h1>µVision Build Log</h1>
+<h2>Project:</h2>
+C:\Users\Achar\Desktop\Notes\proteus\source_code_by_exercises\chapter8\ex65\code\ex65.uvproj
+Project File Date:  08/06/2024
+
+<h2>Output:</h2>
+Build target 'Target 1'
+assembling STARTUP.A51...
+compiling ex65.c...
+EX65.C(62): error C202: 'keyval': undefined identifier
+EX65.C(66): error C202: 'keyval': undefined identifier
+EX65.C(88): error C202: 'keyval': undefined identifier
+EX65.C(92): error C202: 'keyval': undefined identifier
+EX65.C(96): error C202: 'keyval': undefined identifier
+EX65.C(100): error C202: 'keyval': undefined identifier
+EX65.C(106): error C202: 'keyval': undefined identifier
+EX65.C(110): error C202: 'keyval': undefined identifier
+EX65.C(114): error C202: 'keyval': undefined identifier
+EX65.C(118): error C202: 'keyval': undefined identifier
+EX65.C(124): error C202: 'keyval': undefined identifier
+EX65.C(128): error C202: 'keyval': undefined identifier
+EX65.C(132): error C202: 'keyval': undefined identifier
+EX65.C(136): error C202: 'keyval': undefined identifier
+EX65.C(142): error C202: 'keyval': undefined identifier
+EX65.C(146): error C202: 'keyval': undefined identifier
+EX65.C(150): error C202: 'keyval': undefined identifier
+EX65.C(154): error C202: 'keyval': undefined identifier
+Target not created
+Build target 'Target 1'
+compiling ex65.c...
+linking...
+Program Size: data=18.0 xdata=0 code=260
+creating hex file from "ex65"...
+"ex65" - 0 Error(s), 0 Warning(s).
+Build target 'Target 1'
+compiling ex65.c...
+linking...
+Program Size: data=18.0 xdata=0 code=260
+creating hex file from "ex65"...
+"ex65" - 0 Error(s), 0 Warning(s).
+Build target 'Target 1'
+compiling ex65.c...
+linking...
+Program Size: data=18.0 xdata=0 code=260
+creating hex file from "ex65"...
+"ex65" - 0 Error(s), 0 Warning(s).
+Build target 'Target 1'
+compiling ex65.c...
+linking...
+Program Size: data=18.0 xdata=0 code=264
+creating hex file from "ex65"...
+"ex65" - 0 Error(s), 0 Warning(s).
+Build target 'Target 1'
+compiling ex65.c...
+linking...
+Program Size: data=18.0 xdata=0 code=266
+creating hex file from "ex65"...
+"ex65" - 0 Error(s), 0 Warning(s).
+Build target 'Target 1'
+compiling ex65.c...
+EX65.C(52): warning C206: '_nop_': missing function-prototype
+EX65.C(52): error C264: intrinsic '_nop_': declaration/activation error
+Target not created

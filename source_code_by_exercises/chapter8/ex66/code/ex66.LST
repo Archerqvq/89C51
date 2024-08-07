@@ -1,0 +1,252 @@
+C51 COMPILER V9.01   EX66                                                                  08/06/2024 15:18:38 PAGE 1   
+
+
+C51 COMPILER V9.01, COMPILATION OF MODULE EX66
+OBJECT MODULE PLACED IN ex66.OBJ
+COMPILER INVOKED BY: C:\Keil_v5_C51\C51\BIN\C51.EXE ex66.c BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          // example 67:
+   2          // simple electronic organ
+   3          
+   4          #include <reg51.h>
+   5          
+   6          // columns definition of matrix keyboard
+   7          sbit P14 = P1^4;
+   8          sbit P15 = P1^5;
+   9          sbit P16 = P1^6;
+  10          sbit P17 = P1^7;
+  11          
+  12          unsigned char keyval;
+  13          sbit sound = P3^7; // pin that outputs pulse in particular frequency
+  14          // global variable, that stores a constant value of timer
+  15          // and it's related to each frequency
+  16          unsigned int C; 
+  17          unsigned int f;
+  18          
+  19          // Macro definition of a C-key bass
+  20          #define l_dao 262 // C-key bass l_dao is set to 262Hz
+  21          #define l_re 286
+  22          #define l_mi 311
+  23          #define l_fa 349
+  24          #define l_sao 392
+  25          #define l_la 440
+  26          #define l_xi 494
+  27          
+  28          // Macro definition of a C-key midrange
+  29          #define dao 525 // C-key midrange dao is set to 525Hz
+  30          #define re 587  
+  31          #define mi 659
+  32          #define fa 698
+  33          #define sao 784
+  34          #define la 880
+  35          #define xi 987
+  36          
+  37          // Macro definition of a C-key high
+  38          #define h_dao 1046 // C-key high dao is set to 1046Hz
+  39          #define h_re 1174  
+  40          #define h_mi 1318
+  41          #define h_fa 1396
+  42          #define h_sao 1567
+  43          #define h_la 1760
+  44          #define h_xi 1975
+  45          
+  46          // soft debouncing
+  47          void delay20ms(void)
+  48          {
+  49   1          unsigned char i, j;
+  50   1      
+  51   1          for(i = 0; i < 100; i++)
+  52   1          {
+  53   2              for(j = 0; j < 60; j++)
+  54   2              {
+  55   3              
+C51 COMPILER V9.01   EX66                                                                  08/06/2024 15:18:38 PAGE 2   
+
+  56   3              }
+  57   2          }
+  58   1      }
+  59          
+  60          // delay 200ms
+  61          void delay(void)
+  62          {
+  63   1          unsigned char i, j;
+  64   1      
+  65   1          for(i = 0; i < 250; i++)
+  66   1          {
+  67   2              for(j = 0; j < 250; j++)
+  68   2              {
+  69   3              }
+  70   2          }
+  71   1      }
+  72          
+  73          // output audio
+  74          void output_sound(void)
+  75          {
+  76   1          C = (46083 / f) * 10; 
+  77   1          // C = (46083 / f);  
+  78   1          TH0 = (8192 - C) / 32; // 13-bit timer 0 high 8 bits assignment
+  79   1          TL0 = (8192 - C) % 32; // 13-bit timer 0 low 5 bits assignment
+  80   1          TR0 = 1; // enable timer 0
+  81   1          delay(); // delay 200ms to play sound
+  82   1          TR0 = 0; // disable timer 0
+  83   1          sound = 1; // disable buzzer
+  84   1          keyval = 0xFF; // stop playing after buzzer output finished
+  85   1      }
+  86          
+  87          
+  88          void main(void)
+  89          {
+  90   1          EA = 1; // global interrupt enable
+  91   1          ET0 = 1; // timer 0 interrupt allowed
+  92   1          ET1 = 1; // timer 1 interrupt allowed
+  93   1          TR1 = 1;  // timer 1 enable to scan keyboard
+  94   1          TMOD = 0x10; // timer 1 in mode 1, timer 0 in mode 0
+  95   1          TH1 = (65536 - 500) / 256; // high 8 bits assignment of timer 1
+  96   1          TL1 = (65536 - 500) % 256; // low 8 bits assignment of timer 1
+  97   1          
+  98   1          while(1)
+  99   1          {
+ 100   2              switch(keyval)
+ 101   2              {
+ 102   3                  case 1: f = dao; output_sound(); break;
+ 103   3                  case 2: f = l_xi; output_sound(); break;
+ 104   3                  case 3: f = l_la; output_sound(); break;
+ 105   3                  case 4: f = l_sao; output_sound(); break;
+ 106   3      
+ 107   3                  case 5: f = sao; output_sound(); break;
+ 108   3                  case 6: f = fa; output_sound(); break;
+ 109   3                  case 7: f = mi; output_sound(); break;
+ 110   3                  case 8: f = re; output_sound(); break;
+ 111   3      
+ 112   3                  case 9: f = h_re; output_sound(); break;
+ 113   3                  case 10: f = h_dao; output_sound(); break;
+ 114   3                  case 11: f = xi; output_sound(); break;
+ 115   3                  case 12: f = la; output_sound(); break;
+ 116   3      
+ 117   3                  case 13: f = h_la; output_sound(); break;
+C51 COMPILER V9.01   EX66                                                                  08/06/2024 15:18:38 PAGE 3   
+
+ 118   3                  case 14: f = h_sao; output_sound(); break;
+ 119   3                  case 15: f = h_fa; output_sound(); break;
+ 120   3                  case 16: f = h_mi; output_sound(); break;
+ 121   3              }
+ 122   2          }
+ 123   1      }
+ 124          
+ 125          // timer 0 interrupt service, let P3.7 output audio pulse
+ 126          void timer0_serve(void) interrupt 1 using 1
+ 127          {
+ 128   1          TH0 = (8192 - C) / 32;
+ 129   1          TL0 = (8192 - C) % 32;
+ 130   1      
+ 131   1          sound = !sound; // toggle P3.7 to output square wave
+ 132   1      }
+ 133          
+ 134          // timer 1 interrupt service, scaning keyboard to assert key value
+ 135          void timer1_serve(void) interrupt 3 using 2
+ 136          {
+ 137   1          TR1 = 0; // disable timer 0
+ 138   1          P1 = 0xF0; // let all rows to be 0, and all columns to be 1
+ 139   1      
+ 140   1          if((P1&0xF0) != 0xF0) // key press detected
+ 141   1          {
+ 142   2              delay20ms();    
+ 143   2          }
+ 144   1      
+ 145   1          if((P1&0xF0) != 0xF0) // key press confirmation
+ 146   1          {
+ 147   2              P1 = 0xFE; // let the first row set to 0  
+ 148   2              if(P14 == 0)  
+ 149   2              {
+ 150   3                  keyval = 1;
+ 151   3              }
+ 152   2              if(P15 == 0)  
+ 153   2              {
+ 154   3                  keyval = 2;
+ 155   3              }
+ 156   2              if(P16 == 0)  
+ 157   2              {
+ 158   3                  keyval = 3;
+ 159   3              }
+ 160   2              if(P17 == 0)  
+ 161   2              {
+ 162   3                  keyval = 4;
+ 163   3              }
+ 164   2      
+ 165   2              P1 = 0xFD; // let the second row set to 0  
+ 166   2              if(P14 == 0)  
+ 167   2              {
+ 168   3                  keyval = 5;
+ 169   3              }
+ 170   2              if(P15 == 0)  
+ 171   2              {
+ 172   3                  keyval = 6;
+ 173   3              }
+ 174   2              if(P16 == 0)  
+ 175   2              {
+ 176   3                  keyval = 7;
+ 177   3              }
+ 178   2              if(P17 == 0)  
+ 179   2              {
+C51 COMPILER V9.01   EX66                                                                  08/06/2024 15:18:38 PAGE 4   
+
+ 180   3                  keyval = 8;
+ 181   3              }
+ 182   2      
+ 183   2              P1 = 0xFB; // let the third row set to 0  
+ 184   2              if(P14 == 0)  
+ 185   2              {
+ 186   3                  keyval = 9;
+ 187   3              }
+ 188   2              if(P15 == 0)  
+ 189   2              {
+ 190   3                  keyval = 10;
+ 191   3              }
+ 192   2              if(P16 == 0)  
+ 193   2              {
+ 194   3                  keyval = 11;
+ 195   3              }
+ 196   2              if(P17 == 0)  
+ 197   2              {
+ 198   3                  keyval = 12;
+ 199   3              }
+ 200   2      
+ 201   2              P1 = 0xF7; // let the fourth row set to 0  
+ 202   2              if(P14 == 0)  
+ 203   2              {
+ 204   3                  keyval = 13;
+ 205   3              }
+ 206   2              if(P15 == 0)  
+ 207   2              {
+ 208   3                  keyval = 14;
+ 209   3              }
+ 210   2              if(P16 == 0)  
+ 211   2              {
+ 212   3                  keyval = 15;
+ 213   3              }
+ 214   2              if(P17 == 0)  
+ 215   2              {
+ 216   3                  keyval = 16;
+ 217   3              }
+ 218   2          }
+ 219   1      
+ 220   1          TR1 = 1; // enable timer 0
+ 221   1          TH1 = (65536 - 500) / 256; // high 8 bits assignment of timer 1
+ 222   1          TL1 = (65536 - 500) % 256; // low 8 bits assignment of timer 1
+ 223   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    519    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      5    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

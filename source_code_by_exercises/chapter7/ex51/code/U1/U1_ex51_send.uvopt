@@ -186,10 +186,10 @@
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
-      <ColumnNumber>98</ColumnNumber>
+      <ColumnNumber>75</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>7</TopLine>
-      <CurrentLine>13</CurrentLine>
+      <TopLine>14</TopLine>
+      <CurrentLine>24</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>.\U1_ex51_send.c</PathWithFileName>
       <FilenameWithoutPath>U1_ex51_send.c</FilenameWithoutPath>
@@ -1541,9 +1541,9 @@
       <Documents>
         <Doc>
           <Name>.\U1_ex51_send.c</Name>
-          <ColumnNumber>98</ColumnNumber>
-          <TopLine>7</TopLine>
-          <CurrentLine>13</CurrentLine>
+          <ColumnNumber>75</ColumnNumber>
+          <TopLine>14</TopLine>
+          <CurrentLine>24</CurrentLine>
         </Doc>
       </Documents>
     </MDIGroup>

@@ -1,0 +1,288 @@
+C51 COMPILER V9.01   EX68                                                                  08/07/2024 17:23:41 PAGE 1   
+
+
+C51 COMPILER V9.01, COMPILATION OF MODULE EX68
+OBJECT MODULE PLACED IN ex68.OBJ
+COMPILER INVOKED BY: C:\Keil_v5_C51\C51\BIN\C51.EXE ex68.c BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          // example 68: lcd clock design
+   2                               
+   3          #include <reg51.h>
+   4          #include <intrins.h>
+   5          
+   6          sbit RS = P2^0; // register selection bit
+   7          sbit RW = P2^1; // read/write selection bit
+   8          sbit E = P2^2;  // enable signal bit
+   9          sbit BF = P0^7; // busy signal bit
+  10          
+  11          // character array to display numbers
+  12          unsigned char code digit[] = {"0123456789"};
+  13          // character array to display notification 
+  14          unsigned char code string[] = {"time in beijing"}; 
+  15          // variable to count interrupt times
+  16          unsigned char count;
+  17          // variables to storage second, minute and hour
+  18          unsigned char s, m, h;
+  19          
+  20          // (3j+2)*i = (3x33+2)x10=1010(us) // no idea how this formula comes -.-
+  21          void delay1ms()
+  22          {
+  23   1          unsigned char i, j;
+  24   1          for(i = 0; i < 10; i++)
+  25   1          {
+  26   2              for(j = 0; j < 33; j++)
+  27   2              {
+  28   3                  ;
+  29   3              }
+  30   2          }    
+  31   1      }
+  32          
+  33          // delay for x millisecond
+  34          void delay(unsigned char n)
+  35          {
+  36   1          unsigned char i;
+  37   1          for(i = 0; i < n; i++)
+  38   1          {
+  39   2              delay1ms();    
+  40   2          }
+  41   1      }
+  42          
+  43          // read whether ldc module is occupied
+  44          // return value : busy = 1 , available = 0
+  45          unsigned char BusyTest(void)
+  46          {
+  47   1          bit result;
+  48   1          // set RS to 0 and RW to 1 to read lcd's status
+  49   1          RS = 0;  
+  50   1          RW = 1;
+  51   1          // enable read/write
+  52   1          E = 1; 
+  53   1      
+  54   1          _nop_(); // do nothing for a machine cycle
+  55   1          _nop_();
+C51 COMPILER V9.01   EX68                                                                  08/07/2024 17:23:41 PAGE 2   
+
+  56   1          _nop_();
+  57   1          _nop_(); // four serial machine cycles for response of lcd
+  58   1      
+  59   1          result = BF; // read busy signal and set to result
+  60   1      
+  61   1          // ATTENTION: this should not be commnented
+  62   1          // an assumption, that a falling edge of E make operation availible
+  63   1          E = 0;   
+  64   1      
+  65   1          return result;
+  66   1      }
+  67          
+  68          // write mode setting or display address to ldc
+  69          void WriteInstructioin(unsigned char dictate)
+  70          {
+  71   1          while(BusyTest() == 1); // await if ldc is occupied
+  72   1          // RS and RW are 0, write instruction operation is available
+  73   1          RS = 0;
+  74   1          RW = 0;
+  75   1          // there is a rising edge when writing instruction
+  76   1          // so first let E to be 0
+  77   1          E = 0;
+  78   1          _nop_();
+  79   1          _nop_();
+  80   1          P0 = dictate; // dictate could be address or insturction
+  81   1          _nop_();
+  82   1          _nop_();
+  83   1          _nop_();
+  84   1          _nop_();    // response for lcd
+  85   1          // a rising edge for E, which means write operation is available
+  86   1          E = 1;
+  87   1          _nop_();
+  88   1          _nop_();
+  89   1          _nop_();
+  90   1          _nop_();    // response for lcd
+  91   1          // a falling edge for E, which makes lcd module excutes instructions automatically
+  92   1          E = 0;
+  93   1      }
+  94          
+  95          // specify the real address of character display
+  96          void WriteAddress(unsigned char x)
+  97          {
+  98   1          WriteInstructioin(x | 0x80);
+  99   1          // the way to display right position on lcd is "80H+x"(x is address code)
+ 100   1      }
+ 101          
+ 102          // write data(standard ASCII) to lcd
+ 103          void WriteData(unsigned char y)
+ 104          {
+ 105   1          while(BusyTest() == 1);
+ 106   1          RS = 1; // RS is 1 and RW is 0, which can write data
+ 107   1          RW = 0;
+ 108   1          // there is a rising edge when writing instruction
+ 109   1          // so first let E to be 0
+ 110   1          E = 0;  
+ 111   1          P0 = y; // send data through P0
+ 112   1          _nop_();
+ 113   1          _nop_();
+ 114   1          _nop_();
+ 115   1          _nop_(); // response for lcd
+ 116   1          // a rising edge for E, which means write operation is available
+ 117   1          E = 1;
+C51 COMPILER V9.01   EX68                                                                  08/07/2024 17:23:41 PAGE 3   
+
+ 118   1          _nop_();
+ 119   1          _nop_();
+ 120   1          _nop_();
+ 121   1          _nop_();    // response for lcd
+ 122   1          // a falling edge for E, which makes lcd module excutes instructions automatically
+ 123   1          E = 0; 
+ 124   1      }
+ 125          // initialization for lcd's display mode
+ 126          void LcdInitiate(void)
+ 127          {
+ 128   1          delay(15); // 15ms for the first time to write insturction
+ 129   1          // display mode setting: 16x2 display, 5x7 dot matrix, 8-bit data interface
+ 130   1          WriteInstructioin(0x38);
+ 131   1          delay(5);
+ 132   1          // mode setting
+ 133   1          WriteInstructioin(0x38);
+ 134   1          delay(5);
+ 135   1          WriteInstructioin(0x38);
+ 136   1          delay(5);
+ 137   1          // continuously write three times to make sure it works
+ 138   1      
+ 139   1          // display mode setting: display on, cursor off, cursor not blink
+ 140   1          WriteInstructioin(0x0C);
+ 141   1          delay(5);
+ 142   1          // display mode setting: cursor right shift, character not move
+ 143   1          WriteInstructioin(0x06);
+ 144   1          delay(5);
+ 145   1          // clear screen instruction to clear previous content
+ 146   1          WriteInstructioin(0x01);
+ 147   1          delay(5);
+ 148   1      }
+ 149          
+ 150          // display hours
+ 151          void DisplayHour(void)
+ 152          {
+ 153   1          unsigned char i, j;
+ 154   1          i = h / 10;
+ 155   1          j = h % 10;
+ 156   1          WriteAddress(0x44);
+ 157   1          WriteData(digit[i]);        
+ 158   1          WriteData(digit[j]);
+ 159   1      }
+ 160          
+ 161          // display minutes
+ 162          void DisplayMinute(void)
+ 163          {
+ 164   1          unsigned char i, j;
+ 165   1          i = m / 10;
+ 166   1          j = m % 10;
+ 167   1          WriteAddress(0x47);
+ 168   1          WriteData(digit[i]);        
+ 169   1          WriteData(digit[j]);
+ 170   1      }
+ 171          
+ 172          // display second
+ 173          void DisplaySecond(void)
+ 174          {
+ 175   1          unsigned char i, j;
+ 176   1          i = s / 10;
+ 177   1          j = s % 10;
+ 178   1          WriteAddress(0x4A);
+ 179   1          WriteData(digit[i]);        
+C51 COMPILER V9.01   EX68                                                                  08/07/2024 17:23:41 PAGE 4   
+
+ 180   1          WriteData(digit[j]);    
+ 181   1      }
+ 182          
+ 183          void main(void)
+ 184          {
+ 185   1          unsigned char i;
+ 186   1          LcdInitiate(); 
+ 187   1      
+ 188   1          TMOD = 0x01; // t0 in mode 1
+ 189   1          // 50ms for every interrupt
+ 190   1              TH0=(65536 - 46083) / 256;    
+ 191   1              TL0=(65536 - 46083) % 256;   
+ 192   1          EA = 1;  // global interrupt
+ 193   1          ET0 = 1; // t0 interupt allowed
+ 194   1          TR0 = 1; // enable t0
+ 195   1      
+ 196   1          count = 0;
+ 197   1          // first of all, display notification 
+ 198   1          s = 0;
+ 199   1          m = 0;
+ 200   1          h = 0;
+ 201   1      
+ 202   1          WriteAddress(0x00); // Write address, where is row 1 column 4
+ 203   1          i = 0;
+ 204   1          while(string[i] != '\0')
+ 205   1          {
+ 206   2              WriteData(string[i]);
+ 207   2              i++;      
+ 208   2          }
+ 209   1              WriteAddress(0x46);     // Write address, where is row 2 column 7
+ 210   1              WriteData(':');         // write ':' on lcd
+ 211   1              WriteAddress(0x49);     // Write address, where is row 2 column 10
+ 212   1              WriteData(':');         // write ':' on lcd
+ 213   1      
+ 214   1          while(1)
+ 215   1          {
+ 216   2              DisplayHour();
+ 217   2              delay(5); // give some time for the reponse of hardware
+ 218   2              DisplayMinute();
+ 219   2              delay(5); // give some time for the reponse of hardware
+ 220   2              DisplaySecond();
+ 221   2              delay(5); // give some time for the reponse of hardware               
+ 222   2          }
+ 223   1      
+ 224   1      }
+ 225          
+ 226          // enter timer 0 interrupt every 50ms
+ 227          void Time0(void ) interrupt 1 using 0 
+ 228          {
+ 229   1          count++;
+ 230   1          
+ 231   1          if(count == 20)
+ 232   1          {
+ 233   2              count = 0;
+ 234   2              s++; 
+ 235   2          }
+ 236   1          
+ 237   1          if(s == 60) // if reaches 60s
+ 238   1          {
+ 239   2              s = 0;
+ 240   2              m++;        
+ 241   2          }  
+C51 COMPILER V9.01   EX68                                                                  08/07/2024 17:23:41 PAGE 5   
+
+ 242   1          
+ 243   1          if(m == 60) // if reachses 60m
+ 244   1          {
+ 245   2              m = 0;
+ 246   2              h++;        
+ 247   2          } 
+ 248   1          
+ 249   1          if(h == 24) // if reaches 24h
+ 250   1          {        
+ 251   2              h = 0;        
+ 252   2          }
+ 253   1      
+ 254   1          // reload manually
+ 255   1          TH0=(65536 - 46083) / 256;    
+ 256   1              TL0=(65536 - 46083) % 256; 
+ 257   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    410    ----
+   CONSTANT SIZE    =     27    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      4    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----       1
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

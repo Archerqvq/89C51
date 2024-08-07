@@ -1,0 +1,115 @@
+<html>
+<body>
+<pre>
+<h1>µVision Build Log</h1>
+<h2>Project:</h2>
+C:\Users\Achar\Desktop\Notes\proteus\source_code_by_exercises\chapter8\ex68\code\ex68.uvproj
+Project File Date:  08/07/2024
+
+<h2>Output:</h2>
+Build target 'Target 1'
+assembling STARTUP.A51...
+compiling ex68.c...
+linking...
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?LCDINITIATE?EX68
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?DISPLAYHOUR?EX68
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?DISPLAYMINUTE?EX68
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?DISPLAYSECOND?EX68
+Program Size: data=13.1 xdata=0 code=252
+creating hex file from "ex68"...
+"ex68" - 0 Error(s), 4 Warning(s).
+Build target 'Target 1'
+compiling ex68.c...
+EX68.C(194): error C202: 'RT0': undefined identifier
+Target not created
+compiling ex68.c...
+EX68.C(218): warning C206: 'DisplayMintute': missing function-prototype
+ex68.c - 0 Error(s), 1 Warning(s).
+Build target 'Target 1'
+linking...
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?DISPLAYMINUTE?EX68
+*** WARNING L1: UNRESOLVED EXTERNAL SYMBOL
+    SYMBOL:  DISPLAYMINTUTE
+    MODULE:  ex68.obj (EX68)
+*** WARNING L2: REFERENCE MADE TO UNRESOLVED EXTERNAL
+    SYMBOL:  DISPLAYMINTUTE
+    MODULE:  ex68.obj (EX68)
+    ADDRESS: 005BH
+Program Size: data=13.1 xdata=0 code=453
+creating hex file from "ex68"...
+"ex68" - 0 Error(s), 3 Warning(s).
+Build target 'Target 1'
+linking...
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?DISPLAYMINUTE?EX68
+*** WARNING L1: UNRESOLVED EXTERNAL SYMBOL
+    SYMBOL:  DISPLAYMINTUTE
+    MODULE:  ex68.obj (EX68)
+*** WARNING L2: REFERENCE MADE TO UNRESOLVED EXTERNAL
+    SYMBOL:  DISPLAYMINTUTE
+    MODULE:  ex68.obj (EX68)
+    ADDRESS: 005BH
+Program Size: data=13.1 xdata=0 code=453
+creating hex file from "ex68"...
+"ex68" - 0 Error(s), 3 Warning(s).
+Build target 'Target 1'
+compiling ex68.c...
+EX68.C(218): warning C206: 'DisplayMintute': missing function-prototype
+linking...
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?DISPLAYMINUTE?EX68
+*** WARNING L1: UNRESOLVED EXTERNAL SYMBOL
+    SYMBOL:  DISPLAYMINTUTE
+    MODULE:  ex68.obj (EX68)
+*** WARNING L2: REFERENCE MADE TO UNRESOLVED EXTERNAL
+    SYMBOL:  DISPLAYMINTUTE
+    MODULE:  ex68.obj (EX68)
+    ADDRESS: 005BH
+Program Size: data=13.1 xdata=0 code=456
+creating hex file from "ex68"...
+"ex68" - 0 Error(s), 4 Warning(s).
+Build target 'Target 1'
+compiling ex68.c...
+EX68.C(218): warning C206: 'DisplayMinmute': missing function-prototype
+linking...
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?DISPLAYMINUTE?EX68
+*** WARNING L1: UNRESOLVED EXTERNAL SYMBOL
+    SYMBOL:  DISPLAYMINMUTE
+    MODULE:  ex68.obj (EX68)
+*** WARNING L2: REFERENCE MADE TO UNRESOLVED EXTERNAL
+    SYMBOL:  DISPLAYMINMUTE
+    MODULE:  ex68.obj (EX68)
+    ADDRESS: 005BH
+Program Size: data=13.1 xdata=0 code=456
+creating hex file from "ex68"...
+"ex68" - 0 Error(s), 4 Warning(s).
+Build target 'Target 1'
+compiling ex68.c...
+linking...
+Program Size: data=13.1 xdata=0 code=456
+creating hex file from "ex68"...
+"ex68" - 0 Error(s), 0 Warning(s).
+Build target 'Target 1'
+compiling ex68.c...
+linking...
+Program Size: data=13.1 xdata=0 code=456
+creating hex file from "ex68"...
+"ex68" - 0 Error(s), 0 Warning(s).
+Build target 'Target 1'
+compiling ex68.c...
+linking...
+Program Size: data=13.1 xdata=0 code=456
+creating hex file from "ex68"...
+"ex68" - 0 Error(s), 0 Warning(s).
+Build target 'Target 1'
+compiling ex68.c...
+linking...
+Program Size: data=13.1 xdata=0 code=455
+creating hex file from "ex68"...
+"ex68" - 0 Error(s), 0 Warning(s).

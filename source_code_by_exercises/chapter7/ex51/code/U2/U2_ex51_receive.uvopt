@@ -188,7 +188,7 @@
       <Focus>0</Focus>
       <ColumnNumber>50</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>17</TopLine>
+      <TopLine>1</TopLine>
       <CurrentLine>36</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>.\U2_ex51_receive.c</PathWithFileName>
@@ -1542,7 +1542,7 @@
         <Doc>
           <Name>.\U2_ex51_receive.c</Name>
           <ColumnNumber>50</ColumnNumber>
-          <TopLine>17</TopLine>
+          <TopLine>1</TopLine>
           <CurrentLine>36</CurrentLine>
         </Doc>
       </Documents>
