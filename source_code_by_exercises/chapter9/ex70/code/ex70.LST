@@ -1,0 +1,314 @@
+C51 COMPILER V9.01   EX70                                                                  08/17/2024 19:49:43 PAGE 1   
+
+
+C51 COMPILER V9.01, COMPILATION OF MODULE EX70
+OBJECT MODULE PLACED IN ex70.OBJ
+COMPILER INVOKED BY: C:\Keil_v5_C51\C51\BIN\C51.EXE ex70.c BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          // example 70:
+   2          // Read and write operations for multiple AT24C02 devices connected to the I2C bus
+   3          #include <reg51.h>
+   4          #include <intrins.h> // Head file containing the _nop_() function definition
+   5          
+   6          #define OP_READ1 (0xA1) // Device 1's address and read operation, where 0xA1 is equivalent to 1010 0001 in
+             - binary
+   7          #define OP_WRITE1 (0xA0) // Device 1's address and write operation, where 0xA1 is equivalent to 1010 0000 
+             -in binary
+   8          #define OP_READ2 (0xAF) // Device 2's address and read operation, where 0xAF is equivalent to 1010 1111 in
+             - binary
+   9          #define OP_WRITE2 (0xAE) // Device 2's address and write operation, where 0xAE is equivalent to 1010 1110 
+             -in binary
+  10          
+  11          sbit SDA = P3^4;    // Define the Serial Data Line (SDA) bus pin as P3.4.
+  12          sbit SCL = P3^3;    // Define the Serial Clock Line (SCL) bus pin as P3.3.
+  13          
+  14          // (3j+2)*i=(3x33+2)x10=1010(millisecond), so it can be considered as 1 millisecond
+  15          // no idea how this formula works 0.0
+  16          void delay1ms()
+  17          {
+  18   1          unsigned char i, j;
+  19   1      
+  20   1          for(i = 0; i < 10; i++)
+  21   1          {
+  22   2              for(j = 0; j <33; j++)
+  23   2              {
+  24   3                  // do nothing        
+  25   3              }
+  26   2          }
+  27   1      }
+  28          
+  29          // delay x millisecond
+  30          void delaynms(unsigned char n)
+  31          {
+  32   1          unsigned char i;
+  33   1          
+  34   1          for(i = 0; i < n; i++)
+  35   1          {
+  36   2              delay1ms();    
+  37   2          }
+  38   1      }
+  39          
+  40          // I2C start signal
+  41          void start(void)
+  42          {
+  43   1          SCL = 1;
+  44   1          SDA = 1;
+  45   1          _nop_(); // Wait for one machine cycle
+  46   1          _nop_(); // Another one machine cycle
+  47   1          SDA = 0;
+  48   1          _nop_();  
+  49   1          _nop_();    
+  50   1          _nop_();
+  51   1          _nop_();
+C51 COMPILER V9.01   EX70                                                                  08/17/2024 19:49:43 PAGE 2   
+
+  52   1          SCL = 0;
+  53   1      }
+  54          
+  55          void stop(void)
+  56          {
+  57   1          SDA = 0;
+  58   1          _nop_();
+  59   1          _nop_();
+  60   1          SCL = 1;
+  61   1          _nop_();
+  62   1          _nop_();
+  63   1          _nop_();
+  64   1          _nop_();
+  65   1          SDA = 1;
+  66   1      }
+  67          
+  68          unsigned char ReadData(void)
+  69          {
+  70   1          unsigned char i, x;
+  71   1      
+  72   1          // Reading data though SDA
+  73   1          for(i = 0; i < 8; i++)
+  74   1          {
+  75   2              SCL = 1;
+  76   2              x <<= 1;
+  77   2              x |= (unsigned char)SDA;        
+  78   2              SCL = 0;    
+  79   2          }
+  80   1      
+  81   1      //    for(i = 0; i < 8; i++)
+  82   1      //    {
+  83   1      //        SCL = 1;
+  84   1      //        x |= ((unsigned char)SDA) << i;        
+  85   1      //        SCL = 0; 
+  86   1      //        _nop_();
+  87   1      //        _nop_();   
+  88   1      //    }
+  89   1          return x;
+  90   1      }
+  91          
+  92          bit WriteCurrent(unsigned char y)
+  93          {
+  94   1          unsigned char i;
+  95   1          bit ack_bit;
+  96   1      
+  97   1          for(i = 0; i < 8; i++)
+  98   1          {
+  99   2                      SDA = (bit)(0x80&y);
+ 100   2                      _nop_();
+ 101   2                      SCL = 1;
+ 102   2                      _nop_();
+ 103   2                      _nop_();
+ 104   2                      SCL = 0;
+ 105   2                      y <<= 1;        
+ 106   2          }
+ 107   1      
+ 108   1              SDA = 1;
+ 109   1              _nop_();
+ 110   1              _nop_();
+ 111   1              SCL = 1;
+ 112   1              _nop_();
+ 113   1              _nop_();
+C51 COMPILER V9.01   EX70                                                                  08/17/2024 19:49:43 PAGE 3   
+
+ 114   1              _nop_();
+ 115   1              _nop_();
+ 116   1              ack_bit = SDA;
+ 117   1      
+ 118   1              SCL = 0;
+ 119   1                      
+ 120   1              return ack_bit;    
+ 121   1      }
+ 122          
+ 123          void WriteSet1(unsigned char addr, unsigned char dat)
+ 124          {
+ 125   1              start();
+ 126   1              if(WriteCurrent(OP_WRITE1))
+ 127   1              {
+ 128   2                      if(WriteCurrent(addr))
+ 129   2                      {
+ 130   3                         if(WriteCurrent(dat))
+ 131   3                         {
+ 132   4                                 // Write data successfully
+ 133   4                         }
+ 134   3                         else
+ 135   3                         {
+ 136   4                                      return;            
+ 137   4                         }
+ 138   3                      }       
+ 139   2                      else
+ 140   2                      {
+ 141   3                              return;         
+ 142   3                      }
+ 143   2              }
+ 144   1              else
+ 145   1              {
+ 146   2                      return;
+ 147   2              }
+ 148   1              stop();
+ 149   1              delaynms(4);
+ 150   1      }
+ 151          
+ 152          
+ 153          void WriteSet2(unsigned char addr, unsigned char dat)
+ 154          {
+ 155   1              start();
+ 156   1              if(WriteCurrent(OP_WRITE2))
+ 157   1              {
+ 158   2                      if(WriteCurrent(addr))
+ 159   2                      {
+ 160   3                         if(WriteCurrent(dat))
+ 161   3                         {
+ 162   4                                 // Write data successfully
+ 163   4                         }
+ 164   3                         else
+ 165   3                         {
+ 166   4                                      return;            
+ 167   4                         }
+ 168   3                      }       
+ 169   2                      else
+ 170   2                      {
+ 171   3                              return;         
+ 172   3                      }
+ 173   2              }
+ 174   1              else
+ 175   1              {
+C51 COMPILER V9.01   EX70                                                                  08/17/2024 19:49:43 PAGE 4   
+
+ 176   2                      return;
+ 177   2              }
+ 178   1              stop();
+ 179   1              delaynms(4);
+ 180   1      }
+ 181          
+ 182          unsigned char ReadCurrent1(void)
+ 183          {
+ 184   1              unsigned char x;
+ 185   1      
+ 186   1              start();
+ 187   1              if(WriteCurrent(OP_READ1) == 0)
+ 188   1              {
+ 189   2                      // Write data successfully      
+ 190   2              }
+ 191   1              else
+ 192   1              {
+ 193   2                      return 0;
+ 194   2              }
+ 195   1              x = ReadData();
+ 196   1              stop();
+ 197   1      
+ 198   1              return x;
+ 199   1      }
+ 200          
+ 201          unsigned char ReadCurrent2(void)
+ 202          {
+ 203   1              unsigned char x;
+ 204   1      
+ 205   1              start();
+ 206   1              if(WriteCurrent(OP_READ2) == 0)
+ 207   1              {
+ 208   2                      // Write data successfully              
+ 209   2              }
+ 210   1              else
+ 211   1              {
+ 212   2                      return 0;
+ 213   2              }
+ 214   1              x = ReadData();
+ 215   1              stop();
+ 216   1              
+ 217   1              return x;
+ 218   1      }
+ 219          
+ 220          unsigned char ReadSet1(unsigned char set_addr)
+ 221          {
+ 222   1              start();
+ 223   1              if(WriteCurrent(OP_WRITE1) == 0)
+ 224   1              {
+ 225   2                      if(WriteCurrent(set_addr) == 0)
+ 226   2                      {
+ 227   3                              return (ReadCurrent1());
+ 228   3                      }
+ 229   2                      else
+ 230   2                      {
+ 231   3                              return -1;
+ 232   3                      }               
+ 233   2              }
+ 234   1              else
+ 235   1              {
+ 236   2                      return -1;
+ 237   2              }       
+C51 COMPILER V9.01   EX70                                                                  08/17/2024 19:49:43 PAGE 5   
+
+ 238   1      }
+ 239          
+ 240          unsigned char ReadSet2(unsigned char set_addr)
+ 241          {
+ 242   1              start();
+ 243   1              if(WriteCurrent(OP_WRITE2) == 0)
+ 244   1              {
+ 245   2                      if(WriteCurrent(set_addr) == 0)
+ 246   2                      {
+ 247   3                              return (ReadCurrent2());
+ 248   3                      }
+ 249   2                      else
+ 250   2                      {
+ 251   3                              return 0;
+ 252   3                      }               
+ 253   2              }
+ 254   1              else
+ 255   1              {
+ 256   2                      return 0;
+ 257   2              }       
+ 258   1      }
+ 259          
+ 260          void init_i2c(void)
+ 261          {
+ 262   1              SCL = 1;
+ 263   1              SDA = 1;
+ 264   1      }
+ 265          
+ 266          int main(void)
+ 267          {
+ 268   1              unsigned char x;
+ 269   1      
+ 270   1              init_i2c();
+ 271   1      
+ 272   1              WriteSet1(0x36, 0xAA);
+ 273   1              x = ReadSet1(0x36);
+ 274   1      
+ 275   1              WriteSet2(0x48, x);
+ 276   1              P1 = ReadSet2(0x48);
+ 277   1              
+ 278   1              return 0;
+ 279   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    322    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----       1
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

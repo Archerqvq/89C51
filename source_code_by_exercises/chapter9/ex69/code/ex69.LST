@@ -1,0 +1,395 @@
+C51 COMPILER V9.01   EX69                                                                  08/08/2024 17:32:39 PAGE 1   
+
+
+C51 COMPILER V9.01, COMPILATION OF MODULE EX69
+OBJECT MODULE PLACED IN ex69.OBJ
+COMPILER INVOKED BY: C:\Keil_v5_C51\C51\BIN\C51.EXE ex69.c BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          // example 69: first write button counting in to AT24C02, 
+   2          // then read in into 1602 LCD
+   3          
+   4          #include <reg51.h>
+   5          #include <intrins.h> // where _nop_() included(_nop_ means "no operation" for one machine cycle)
+   6          
+   7          // NOTE: the high four-bit of OP_READ/OP_WRITE represent the address of i2c device 
+   8          // device address and write operation(0xA1, aka 1010 0001B, and the last bit - 1 means write)
+   9          #define OP_READ (0xA1) 
+  10          // device address and read operation(0xA0, aka 1010 0000B, and the last bit - 0 means read)
+  11          #define OP_WRITE (0xA0)
+  12          
+  13          // 1602 LCD pins definition
+  14          sbit RS = P2^0; // register selection bit 
+  15          sbit RW = P2^1; // write/read selection bit
+  16          sbit E = P2^2;  // enable signal bit
+  17          sbit BF = P0^7; // busy signal bit
+  18          sbit S = P1^4; // S
+  19          sbit SDA = P3^4; // serial data line defined as p3.4
+  20          sbit SCL = P3^3; // serial clock line defined as p3.3
+  21          
+  22          unsigned char code digit[] = {"0123456789"}; // array to display number
+  23          
+  24          // (3j+2)*i=(3x33+2)x10=1010(millisecond), so it can be considered as 1 millisecond
+  25          // no idea how this formula works 0.0
+  26          void delay1ms()
+  27          {
+  28   1          unsigned char i, j;
+  29   1      
+  30   1          for(i = 0; i < 10; i++)
+  31   1          {
+  32   2              for(j = 0; j <33; j++)
+  33   2              {
+  34   3                  // do nothing        
+  35   3              }
+  36   2          }
+  37   1      }
+  38          
+  39          // delay x millisecond
+  40          void delaynms(unsigned char n)
+  41          {
+  42   1          unsigned char i;
+  43   1          
+  44   1          for(i = 0; i < n; i++)
+  45   1          {
+  46   2              delay1ms();    
+  47   2          }
+  48   1      }
+  49          
+  50          // operations to LCD
+  51          // feature: assert whether LCD is in busy
+  52          // return value: 1 - busy, 0 - idle
+  53          unsigned char BusyTest(void)
+  54          {
+  55   1          bit result;
+C51 COMPILER V9.01   EX69                                                                  08/08/2024 17:32:39 PAGE 2   
+
+  56   1          // read status is allowed when RS is low and RW is high
+  57   1          RS = 0;
+  58   1          RW = 1;
+  59   1          E = 1; // E = 1, write/read allowed
+  60   1          _nop_(); // do nothing, just to consume time
+  61   1          _nop_();
+  62   1          _nop_();
+  63   1          _nop_(); // idle operation for serial four machine cycles to give hardware some time to respond
+  64   1          result = BF; // get busy status by reading BF
+  65   1          E = 0; // let E be 0 to make LCD available
+  66   1          return result;
+  67   1      }
+  68          
+  69          // feature: mode settings or display addresses that need to be sent to LCD
+  70          void WriteInstruction(unsigned char dictate)
+  71          {
+  72   1          while(BusyTest() == 1); // await if LCD is in used
+  73   1          // writing instructions is allowed when RS and RW are both 0
+  74   1          RS = 0;
+  75   1          RW = 0;
+  76   1          // NOTE: here we let E to be 0 first(according to chart 8-6 in the book, E shoud be high when writing 
+             -is needed).
+  77   1          // just let E have a change from 0 to 1, so E should be set to 0 first
+  78   1          E = 0;
+  79   1      
+  80   1          _nop_();    
+  81   1          _nop_();    // Two no operation instructions to give hardware some time to respond
+  82   1          P0 = dictate; // Write data into P0, which could be instruction or address
+  83   1          _nop_();
+  84   1          _nop_();
+  85   1          _nop_();
+  86   1          _nop_(); // Four machine cycles are consumed here 
+  87   1          E = 1;   // Let E be 1 to enable writing capability.
+  88   1          _nop_();
+  89   1          _nop_();
+  90   1          _nop_();
+  91   1          _nop_();
+  92   1          E = 0;   // LCD start executing instructions when E has a falling edge
+  93   1      }
+  94          
+  95          // Specify the actual address for the character to be displayed on LCD
+  96          void WriteAddress(unsigned char x)
+  97          {
+  98   1          WriteInstruction(x | 0x80); // Using "80H+x(x means address code)" to refers the actual address 
+  99   1      }
+ 100          
+ 101          // Writing data(characters in ASCII table) into LCD 
+ 102          void WriteData(unsigned char y)
+ 103          {
+ 104   1          while(BusyTest() == 1); // await if LCD is in used
+ 105   1          // writing data is allowed when RS and RW are both 0
+ 106   1          RS = 1;
+ 107   1          RW = 0;
+ 108   1          // NOTE: here we let E to be 0 first(according to chart 8-6 in the book, E shoud be high when writing 
+             -is needed).
+ 109   1          // just let E have a change from 0 to 1, so E should be set to 0 first
+ 110   1          E = 0;
+ 111   1      
+ 112   1          P0 = y;
+ 113   1          _nop_();
+ 114   1          _nop_();
+ 115   1          _nop_();
+C51 COMPILER V9.01   EX69                                                                  08/08/2024 17:32:39 PAGE 3   
+
+ 116   1          _nop_(); // Four clock cycles are consumed here 
+ 117   1          E = 1;
+ 118   1          _nop_();
+ 119   1          _nop_();
+ 120   1          _nop_();
+ 121   1          _nop_(); // Four clock cycles are consumed here
+ 122   1          E = 0; // LCD start executing instructions when E has a falling edge       
+ 123   1      }
+ 124          
+ 125          // initialization for lcd's display mode
+ 126          void LcdInitiate(void)
+ 127          {
+ 128   1          delaynms(15); // 15ms for the first time to write insturction
+ 129   1          // display mode setting: 16x2 display, 5x7 dot matrix, 8-bit data interface
+ 130   1          WriteInstruction(0x38);
+ 131   1          delaynms(5);
+ 132   1          // mode setting
+ 133   1          WriteInstruction(0x38);
+ 134   1          delaynms(5);
+ 135   1          WriteInstruction(0x38);
+ 136   1          delaynms(5);
+ 137   1          // continuously write three times to make sure it works
+ 138   1      
+ 139   1          // display mode setting: display on, cursor off, cursor not blink
+ 140   1          WriteInstruction(0x0C);
+ 141   1          delaynms(5);
+ 142   1          // display mode setting: cursor right shift, character not move
+ 143   1          WriteInstruction(0x06);
+ 144   1          delaynms(5);
+ 145   1          // clear screen instruction to clear previous content
+ 146   1          WriteInstruction(0x01);
+ 147   1          delaynms(5);
+ 148   1      }
+ 149          
+ 150          // Display number on the screen
+ 151          void Display(unsigned char x)
+ 152          {
+ 153   1          unsigned char i, j;
+ 154   1          i = x / 10; // Get it's tens
+ 155   1          j = x % 10; // Get it's ones
+ 156   1          WriteAddress(0x44); // The address indicates where the number needs to be displayed on the screen
+ 157   1          WriteData(digit[i]);
+ 158   1          WriteData(digit[j]);
+ 159   1      }
+ 160          
+ 161          // The following operations involve writing to and reading from AT24C02(I2C interface)
+ 162          
+ 163          // I2C start signal 
+ 164          void start(void)
+ 165          {
+ 166   1          SCL = 1; // Initialize SDA to 1
+ 167   1          SDA = 1; // SCL must be 1 when the data transmission starts
+ 168   1          _nop_();            
+ 169   1          _nop_(); // Wait for two machine cycles
+ 170   1          SDA = 0; // A falling edge of SDA is considered as start signal
+ 171   1          _nop_();            
+ 172   1          _nop_();
+ 173   1          _nop_();            
+ 174   1          _nop_(); // Wait for four machine cycles
+ 175   1          SCL = 0; // Data transmitted through SDA is changeable when SCL is low 
+ 176   1      }
+ 177          
+C51 COMPILER V9.01   EX69                                                                  08/08/2024 17:32:39 PAGE 4   
+
+ 178          // I2C stop singnal
+ 179          void stop()
+ 180          {
+ 181   1          SDA = 0; // Initialize SDA to 1
+ 182   1          _nop_();
+ 183   1          _nop_(); // Wait for two machine cycles
+ 184   1          SCL = 1;
+ 185   1          _nop_();
+ 186   1          _nop_();
+ 187   1          _nop_();
+ 188   1          _nop_(); // Wait for four machine cycles
+ 189   1          SDA = 1; // A rising edge of SDA when SCL is high is considered as stop signal
+ 190   1      }
+ 191          
+ 192          // Read data from AT24Cxx
+ 193          unsigned char ReadData(void)
+ 194          {
+ 195   1          unsigned char i, x;
+ 196   1      
+ 197   1          // Read data through SDA
+ 198   1          for(i = 0; i < 8; i++)
+ 199   1          {
+ 200   2              // When SCL is high, the data in SDA cannot be changed, so it can be read.
+ 201   2              SCL = 1;
+ 202   2              x <<= 1;
+ 203   2              x |= (unsigned char)SDA;
+ 204   2              SCL = 0;              
+ 205   2          }
+ 206   1          return x;    
+ 207   1      }
+ 208          
+ 209          // Write data to the current address of the AT24Cxx
+ 210          bit WriteCurrent(unsigned char y)
+ 211          {
+ 212   1          unsigned char i;
+ 213   1          bit ack_bit;    // Store ack bit
+ 214   1          
+ 215   1          // Write a byte
+ 216   1          // When transmitting, the most significant bit is sent first, followed by the least significant bit
+ 217   1          for(i = 0; i < 8; i++) 
+ 218   1          {
+ 219   2              // Through a bitwise 'AND' operation, send the most significant bit of data to SDA
+ 220   2              SDA = (bit)(0x80&y);                
+ 221   2              _nop_(); // Wait for a machine cycle
+ 222   2              SCL = 1; // Write data to AT24Cxx on the rising edge of SCL
+ 223   2              _nop_();
+ 224   2              _nop_();
+ 225   2              SCL = 0; // Set SCL back to low level to generate the required eight pulses on the SCL line for da
+             -ta transmission.
+ 226   2              y <<= 1; // Shift each bit in y one position to the left
+ 227   2          }    
+ 228   1      
+ 229   1          // Wait for ack signal after sending one byte data
+ 230   1          // The host releases SDA and waits for the slave's response, which will pull SDA low
+ 231   1          // Check the book for more details
+ 232   1          SDA = 1;
+ 233   1          _nop_(); // Wait for one machine cycle
+ 234   1          _nop_();
+ 235   1          SCL = 1;
+ 236   1          _nop_();
+ 237   1          _nop_();
+ 238   1          _nop_();
+C51 COMPILER V9.01   EX69                                                                  08/08/2024 17:32:39 PAGE 5   
+
+ 239   1          _nop_(); // Wait for one machine cycle
+ 240   1      
+ 241   1          ack_bit = SDA; // The receiving device (AT24Cxx) sends a low level to SDA, indicating that a byte has 
+             -been received
+ 242   1      
+ 243   1          SCL = 0;    // Data on SDA is only allowed to change when SCL is at a low level, allowing subsequent d
+             -ata transmission.
+ 244   1      
+ 245   1          return ack_bit;
+ 246   1      }
+ 247          
+ 248          // Write data to the specified address in the AT24Cxx
+ 249          void WriteSet(unsigned char add, unsigned char dat)
+ 250          {
+ 251   1          start();  // Initiate data transmission
+ 252   1          
+ 253   1      //    WriteCurrent(OP_WRITE); // Select the AT24Cxx chip to be operated on and indicate that data will be 
+             -written to it
+ 254   1      //    WriteCurrent(add); // Write to the specified address
+ 255   1      //    WriteCurrent(dat); // Write data to the current address (specified above)
+ 256   1      
+ 257   1          if(WriteCurrent(OP_WRITE) == 0)
+ 258   1          {
+ 259   2              if(WriteCurrent(add) == 0)
+ 260   2              {
+ 261   3                  if(WriteCurrent(dat) == 0)            
+ 262   3                  {
+ 263   4                      // Write data successfully                
+ 264   4                  }
+ 265   3                  else
+ 266   3                  {
+ 267   4                      return;
+ 268   4                  }
+ 269   3              } 
+ 270   2              else
+ 271   2              {
+ 272   3                  return;
+ 273   3              }              
+ 274   2          }
+ 275   1          else
+ 276   1          {
+ 277   2              return;
+ 278   2          }
+ 279   1      
+ 280   1          stop();            // Stop data tramsmission
+ 281   1          delaynms(4);  // The write cycle for one byte is 1 ms; it is recommended to have a delay of at least 1
+             - ms
+ 282   1      }
+ 283          
+ 284          // Read data from the current address in the AT24Cxx
+ 285          unsigned char ReadCurrent()
+ 286          {
+ 287   1          unsigned char x;
+ 288   1          start();  // // Initiate data transmission
+ 289   1      
+ 290   1          if(WriteCurrent(OP_READ) == 0)
+ 291   1          {
+ 292   2              // Write data successfully      
+ 293   2          }
+ 294   1          else
+ 295   1          {
+ 296   2              return 0;
+C51 COMPILER V9.01   EX69                                                                  08/08/2024 17:32:39 PAGE 6   
+
+ 297   2          }
+ 298   1      
+ 299   1          x=ReadData();
+ 300   1          stop();
+ 301   1      
+ 302   1          return x;
+ 303   1      }
+ 304          
+ 305          // Read data from the specified address in the AT24Cxx
+ 306          unsigned char ReadSet(unsigned char set_add)
+ 307          {
+ 308   1          // Refer to the I2C read operation timing sequence for more information
+ 309   1          start();
+ 310   1          WriteCurrent(OP_WRITE);
+ 311   1          WriteCurrent(set_add);
+ 312   1          return (ReadCurrent());
+ 313   1      }
+ 314          
+ 315          void main(void)
+ 316          {
+ 317   1          // The variable 'sum' is used to store the count value when the button is pressed
+ 318   1          unsigned char sum = 0; 
+ 319   1          // The value that read from the AT24C02 which should be the same as sum
+ 320   1          unsigned char x = 0; 
+ 321   1       
+ 322   1          LcdInitiate();
+ 323   1      
+ 324   1          while(1)
+ 325   1          {
+ 326   2              if(S == 0) // If button pressed
+ 327   2              {
+ 328   3                  delaynms(80); // decouncing by software, the delay lasts 80 milliseconds
+ 329   3                  if(S == 0)
+ 330   3                  {
+ 331   4                      // button perss confirmed
+ 332   4                  } 
+ 333   3                  
+ 334   3                  while(S != 1)
+ 335   3                  {
+ 336   4                      // Block the program when the button is pressed
+ 337   4                  }
+ 338   3      
+ 339   3                  if(sum == 10)
+ 340   3                  {
+ 341   4                     sum = 0;
+ 342   4                  }
+ 343   3                  else
+ 344   3                  {
+ 345   4                      sum++;
+ 346   4                  }                                   
+ 347   3              }    
+ 348   2              
+ 349   2              WriteSet(0x01, sum); 
+ 350   2              x = ReadSet(0x01);
+ 351   2              Display(x);                    
+ 352   2          }
+ 353   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    413    ----
+   CONSTANT SIZE    =     11    ----
+C51 COMPILER V9.01   EX69                                                                  08/08/2024 17:32:39 PAGE 7   
+
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----       2
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

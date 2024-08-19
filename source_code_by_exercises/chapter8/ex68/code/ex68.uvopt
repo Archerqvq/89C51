@@ -134,7 +134,7 @@
         <Bp>
           <Number>0</Number>
           <Type>0</Type>
-          <LineNumber>35</LineNumber>
+          <LineNumber>5</LineNumber>
           <EnabledFlag>1</EnabledFlag>
           <Address>0</Address>
           <ByteObject>0</ByteObject>
@@ -142,7 +142,7 @@
           <SizeOfObject>0</SizeOfObject>
           <BreakByAccess>0</BreakByAccess>
           <BreakIfRCount>0</BreakIfRCount>
-          <Filename>ex67.c</Filename>
+          <Filename>ex68.c</Filename>
           <ExecCommand></ExecCommand>
           <Expression></Expression>
         </Bp>
@@ -170,7 +170,7 @@
         <aSer4>0</aSer4>
         <StkLoc>0</StkLoc>
         <TrcWin>0</TrcWin>
-        <newCpu>0</newCpu>
+        <newCpu>1</newCpu>
         <uProt>0</uProt>
       </DebugFlag>
       <LintExecutable></LintExecutable>
@@ -184,8 +184,8 @@
     <tvExpOptDlg>0</tvExpOptDlg>
     <cbSel>0</cbSel>
     <File>
-      <GroupNumber>1</GroupNumber>
-      <FileNumber>1</FileNumber>
+      <GroupNumber>0</GroupNumber>
+      <FileNumber>0</FileNumber>
       <FileType>2</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
@@ -198,18 +198,18 @@
       <FilenameWithoutPath>STARTUP.A51</FilenameWithoutPath>
     </File>
     <File>
-      <GroupNumber>1</GroupNumber>
-      <FileNumber>2</FileNumber>
+      <GroupNumber>0</GroupNumber>
+      <FileNumber>0</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
-      <ColumnNumber>30</ColumnNumber>
+      <ColumnNumber>44</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>163</TopLine>
-      <CurrentLine>174</CurrentLine>
+      <TopLine>193</TopLine>
+      <CurrentLine>210</CurrentLine>
       <bDave2>0</bDave2>
-      <PathWithFileName>.\ex67.c</PathWithFileName>
-      <FilenameWithoutPath>ex67.c</FilenameWithoutPath>
+      <PathWithFileName>.\ex68.c</PathWithFileName>
+      <FilenameWithoutPath>ex68.c</FilenameWithoutPath>
     </File>
   </Group>
 
@@ -1557,10 +1557,10 @@
       <ActiveTab>0</ActiveTab>
       <Documents>
         <Doc>
-          <Name>.\ex67.c</Name>
-          <ColumnNumber>30</ColumnNumber>
-          <TopLine>163</TopLine>
-          <CurrentLine>174</CurrentLine>
+          <Name>.\ex68.c</Name>
+          <ColumnNumber>44</ColumnNumber>
+          <TopLine>193</TopLine>
+          <CurrentLine>210</CurrentLine>
         </Doc>
       </Documents>
     </MDIGroup>

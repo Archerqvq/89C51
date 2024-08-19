@@ -203,10 +203,10 @@
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
-      <ColumnNumber>30</ColumnNumber>
+      <ColumnNumber>25</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
       <TopLine>163</TopLine>
-      <CurrentLine>174</CurrentLine>
+      <CurrentLine>180</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>.\ex67.c</PathWithFileName>
       <FilenameWithoutPath>ex67.c</FilenameWithoutPath>
@@ -1558,9 +1558,9 @@
       <Documents>
         <Doc>
           <Name>.\ex67.c</Name>
-          <ColumnNumber>30</ColumnNumber>
+          <ColumnNumber>25</ColumnNumber>
           <TopLine>163</TopLine>
-          <CurrentLine>174</CurrentLine>
+          <CurrentLine>180</CurrentLine>
         </Doc>
       </Documents>
     </MDIGroup>
