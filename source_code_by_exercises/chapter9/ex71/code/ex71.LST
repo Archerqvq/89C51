@@ -1,0 +1,362 @@
+C51 COMPILER V9.01   EX71                                                                  08/19/2024 19:32:02 PAGE 1   
+
+
+C51 COMPILER V9.01, COMPILATION OF MODULE EX71
+OBJECT MODULE PLACED IN ex71.OBJ
+COMPILER INVOKED BY: C:\Keil_v5_C51\C51\BIN\C51.EXE ex71.c BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          // Example 71
+   2          // This example writes 'A good person lives a peaceful life' into AT24C02 for storage and then plays it ba
+             -ck
+   3          
+   4          #include <reg51.h>
+   5          #include <intrins.h> // Where function _nop_() is defined 
+   6          #define OP_READ (0xA1)  // Device's address and reading operation(0xA1 = 1010 0001B)
+   7          #define OP_WRITE (0xA0) // Device's address and writing operation(0xA0 = 1010 0000B)
+   8          
+   9          sbit SDA = P3^4;
+  10          sbit SCL = P3^3;
+  11          sbit sound = P3^7; // Define P3.7 as the pin that ouputs audio
+  12          unsigned int C;    // Constant for timer
+  13          
+  14          // Macro definition for audio lowering C tone
+  15          // Define the macro l_dao as the frequency of the low tone '1', which is 262 Hz
+  16          #define l_dao 262 
+  17          // Define the macro l_re as the frequency of the low tone '2', which is 286
+  18          #define l_re 286 
+  19          // Define the macro l_mi as the frequency of the low tone '3', which is 311
+  20          #define l_mi 311 
+  21          // Define the macro l_fa as the frequency of the low tone '4', which is 349 
+  22          #define l_fa 349
+  23          // Define the macro l_sao as the frequency of the low tone '5', which is 392
+  24          #define l_sao 392
+  25          // Define the macro l_la as the frequency of the low tone '6', which is 440
+  26          #define l_la 440
+  27          // Define the macro l_xi as the frequency of the low tone '7', which is 494
+  28          #define l_xi 494
+  29          
+  30          // Macro definition for audio middle C tone       
+  31          #define dao 523
+  32          #define re 587
+  33          #define mi 659
+  34          #define fa 698
+  35          #define sao 784
+  36          #define la 880
+  37          #define xi 987
+  38          
+  39          // Macro definition for audio high C tone        
+  40          #define h_dao 1046
+  41          #define h_re 1174
+  42          #define h_mi 1318
+  43          #define h_fa 1396
+  44          #define h_sao 1567
+  45          #define h_la 1760
+  46          #define h_xi 1975
+  47          
+  48          // dealy for 200ms 
+  49          void delay()
+  50          {
+  51   1              unsigned char i, j;
+  52   1      
+  53   1              for(i = 0; i < 250; i++)
+  54   1              {
+C51 COMPILER V9.01   EX71                                                                  08/19/2024 19:32:02 PAGE 2   
+
+  55   2                      for(j = 0; j < 250; j++)
+  56   2                      {
+  57   3                              ;               
+  58   3                      }
+  59   2              }
+  60   1      }
+  61          
+  62          void delay1ms()
+  63          {
+  64   1              unsigned char i, j;
+  65   1      
+  66   1              for(i = 0; i < 10; i++)
+  67   1              {
+  68   2                      for(j = 0; j < 33; j++)
+  69   2                      {
+  70   3                              ;
+  71   3                      }
+  72   2              }
+  73   1      }
+  74          
+  75          void delaynms(unsigned char n)
+  76          {
+  77   1              unsigned char i;
+  78   1      
+  79   1              for(i = 0; i < n; i++)
+  80   1              {
+  81   2                      delay1ms();     
+  82   2              }
+  83   1      }
+  84          
+  85          void start(void)
+  86          {
+  87   1              SDA = 1;
+  88   1              SCL = 1;
+  89   1              _nop_();
+  90   1              _nop_();
+  91   1              SDA = 0;
+  92   1              _nop_();
+  93   1              _nop_();
+  94   1              _nop_();
+  95   1              _nop_();
+  96   1              SCL = 0;
+  97   1      }
+  98          
+  99          void stop(void)
+ 100          {
+ 101   1              SDA = 0;
+ 102   1              _nop_();
+ 103   1              _nop_();
+ 104   1              SCL = 1;
+ 105   1              _nop_();
+ 106   1              _nop_();
+ 107   1              _nop_();
+ 108   1              _nop_();
+ 109   1              SDA = 1;
+ 110   1      }
+ 111          
+ 112          unsigned char ReadData()
+ 113          {
+ 114   1              unsigned char i, x;
+ 115   1      
+ 116   1              for(i = 0; i < 8; i++)
+C51 COMPILER V9.01   EX71                                                                  08/19/2024 19:32:02 PAGE 3   
+
+ 117   1              {
+ 118   2                      SCL = 1;
+ 119   2                      x <<= 1;
+ 120   2                      x |= (unsigned char)SDA;
+ 121   2                      SCL = 0;        
+ 122   2              }
+ 123   1      
+ 124   1              return (x);
+ 125   1      }
+ 126          
+ 127          bit WriteCurrent(unsigned char y)
+ 128          {
+ 129   1              unsigned char i;
+ 130   1              bit ack_bit;
+ 131   1      
+ 132   1              for(i = 0; i < 8; i++)
+ 133   1              {
+ 134   2                      SDA = (bit)(y&0x80);
+ 135   2                      _nop_();
+ 136   2                      SCL = 1;
+ 137   2                      _nop_();
+ 138   2                      _nop_();
+ 139   2                      SCL = 0;
+ 140   2                      y <<= 1;
+ 141   2              }
+ 142   1      
+ 143   1              // Waiting for ack bit
+ 144   1              SDA = 1;
+ 145   1              _nop_();
+ 146   1              _nop_();
+ 147   1              SCL = 1;
+ 148   1              _nop_();
+ 149   1              _nop_();
+ 150   1              _nop_();
+ 151   1              _nop_();
+ 152   1      
+ 153   1              ack_bit = SDA;
+ 154   1              SCL = 0;
+ 155   1      
+ 156   1              return ack_bit;
+ 157   1      }
+ 158          
+ 159          void WriteSet(unsigned char add, unsigned char dat)
+ 160          {
+ 161   1              start();
+ 162   1              if(WriteCurrent(OP_WRITE) == 0)
+ 163   1              {
+ 164   2                      if(WriteCurrent(add) == 0)
+ 165   2                      {                       
+ 166   3                              if(WriteCurrent(dat) == 0)
+ 167   3                              {
+ 168   4                                      // Writing successfully
+ 169   4                              }               
+ 170   3                              else
+ 171   3                              {
+ 172   4                                      return;
+ 173   4                              }
+ 174   3                      }       
+ 175   2                      else
+ 176   2                      {
+ 177   3                              return;
+ 178   3                      }
+C51 COMPILER V9.01   EX71                                                                  08/19/2024 19:32:02 PAGE 4   
+
+ 179   2              }
+ 180   1              else
+ 181   1              {
+ 182   2                      return;
+ 183   2              }
+ 184   1              stop();
+ 185   1              delaynms(4);
+ 186   1      }
+ 187          
+ 188          unsigned char ReadCurrent()
+ 189          {
+ 190   1              unsigned char x;
+ 191   1              
+ 192   1              start();
+ 193   1              WriteCurrent(OP_READ);  
+ 194   1              x = ReadData();
+ 195   1              stop();
+ 196   1              
+ 197   1              return x;       
+ 198   1      }
+ 199          
+ 200          unsigned char ReadSet(unsigned char set_addr)
+ 201          {
+ 202   1              start();
+ 203   1              WriteCurrent(OP_WRITE);
+ 204   1              WriteCurrent(set_addr);
+ 205   1      
+ 206   1              return (ReadCurrent());
+ 207   1      }
+ 208          
+ 209          
+ 210          void init_i2c(void)
+ 211          {
+ 212   1              SCL = 1;
+ 213   1              SDA = 1;
+ 214   1      }
+ 215          
+ 216          void main(void)
+ 217          {
+ 218   1              unsigned char i, j;
+ 219   1              unsigned char temp; // To store compressed audio
+ 220   1              unsigned char Ji;   // To store note
+ 221   1              // Store the maximum number of notes to allocate storage space for notes and beats in the AT24C02
+ 222   1              unsigned char N;   
+ 223   1              unsigned int fr;  // To store decompressed audio
+ 224   1      
+ 225   1              // Each line corresponds to a note
+ 226   1              unsigned int code f[] = {re, mi, re, dao, l_la, dao, l_la, 
+ 227   1                                                               l_sao, l_mi, l_sao, l_la, dao,
+ 228   1                                                               l_la, dao, sao, la, mi, sao,
+ 229   1                                                               re,
+ 230   1                                                               mi, re, mi, sao, mi,
+ 231   1                                                               l_sao, l_mi, l_sao, l_la, dao,
+ 232   1                                                               l_la, l_la, dao, l_la, l_sao, l_re, l_mi,
+ 233   1                                                               l_sao,
+ 234   1                                                               re, re, sao, la, sao,
+ 235   1                                                               fa, mi, sao, mi,
+ 236   1                                                               la, sao, mi, re, mi, l_la, dao,
+ 237   1                                                               re,
+ 238   1                                                               mi, re, mi, sao, mi,
+ 239   1                                                               l_sao, l_mi, l_sao, l_la, dao,
+ 240   1                                                               l_la, dao, re, l_la, dao, re, mi,
+C51 COMPILER V9.01   EX71                                                                  08/19/2024 19:32:02 PAGE 5   
+
+ 241   1                                                               re,
+ 242   1                                                               l_la, dao, re, l_la, dao, re, mi,
+ 243   1                                                               re,
+ 244   1                                                               0x00}; // 0x00 is used as the end mark of the note
+ 245   1      
+ 246   1              // Here are the beats for each note in the sheet music
+ 247   1              // "4" corresponds to 4 delay units, "2" corresponds to 2 delay units, and "1" corresponds to 1 delay uni
+             -t
+ 248   1      
+ 249   1              unsigned char code JP[] = {4, 1, 1, 4, 1, 1, 2,
+ 250   1                                                                 2, 2, 2, 2, 8,
+ 251   1                                                                 4, 2, 3, 1, 2, 2,
+ 252   1                                                                 10,
+ 253   1                                                                 4, 2, 2, 4, 4,
+ 254   1                                                                 2, 2, 2, 2, 4,
+ 255   1                                                                 2, 2, 2, 2, 2, 2, 2,
+ 256   1                                                                 10,
+ 257   1                                                                 4, 4, 4, 2, 2,
+ 258   1                                                                 4, 2, 4, 4,
+ 259   1                                                                 4, 2, 2, 2, 2, 2, 2,
+ 260   1                                                                 10,
+ 261   1                                                                 4, 2, 2, 4, 4,
+ 262   1                                                                 2, 2, 2, 2, 6,
+ 263   1                                                                 4, 2, 2, 4, 1, 1, 4,
+ 264   1                                                                 10,
+ 265   1                                                                 4, 2, 2, 4, 1, 1, 4,
+ 266   1                                                                 10};
+ 267   1      
+ 268   1              EA = 1; // Enable global interrupt
+ 269   1              ET0 = 1; // T0 interrupt allowed
+ 270   1              TMOD = 0x00; // Mode 1 with timer T0 (13-bit counter) 
+ 271   1      
+ 272   1              init_i2c();
+ 273   1      
+ 274   1              i = 0; // Writing note frequency from f of the index 0
+ 275   1      
+ 276   1              while(f[i] != 0x00)
+ 277   1              {
+ 278   2                      temp = (unsigned char)(f[i]/8);
+ 279   2                      WriteSet(0x00 + i, temp);
+ 280   2                      i++;
+ 281   2              }
+ 282   1      
+ 283   1              N = i;
+ 284   1              i = 0;
+ 285   1      
+ 286   1              while(f[i] != 0x00)
+ 287   1              {
+ 288   2                      WriteSet(0x00 + N + i, JP[i]);
+ 289   2                      i++;
+ 290   2              }
+ 291   1      
+ 292   1              while(1)
+ 293   1              {
+ 294   2                      for(i = 0; i < N; i++)
+ 295   2                      {
+ 296   3                              temp = ReadSet(0x00 + i);
+ 297   3                              Ji = ReadSet(0x00 + N + i);
+ 298   3                              fr = 8 * temp;
+ 299   3      
+ 300   3                              C = 460830 / fr;
+ 301   3                              TH0     = (8192 - C) / 32;
+C51 COMPILER V9.01   EX71                                                                  08/19/2024 19:32:02 PAGE 6   
+
+ 302   3                              TL0 = (8192 - C) % 32;
+ 303   3                              TR0 = 1;
+ 304   3      
+ 305   3                              for(j = 0; j < Ji; j++)
+ 306   3                              {
+ 307   4                                      delay();                        
+ 308   4                              }
+ 309   3      
+ 310   3                              TR0 = 0;
+ 311   3                      }
+ 312   2      
+ 313   2                      sound = 1;
+ 314   2      
+ 315   2                      for(i = 0; i < 8; i++)
+ 316   2                      {
+ 317   3                              delay();
+ 318   3                      }
+ 319   2              }
+ 320   1      }
+ 321          
+ 322          void timer0(void) interrupt 1 using 1
+ 323          {
+ 324   1              sound = !sound;
+ 325   1              TH0     = (8192 - C) / 32;
+ 326   1              TL0 = (8192 - C) % 32;
+ 327   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    477    ----
+   CONSTANT SIZE    =    242    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      2       4
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----       1
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

@@ -130,23 +130,6 @@
         <tIfile></tIfile>
         <pMon></pMon>
       </DebugOpt>
-      <Breakpoint>
-        <Bp>
-          <Number>0</Number>
-          <Type>0</Type>
-          <LineNumber>194</LineNumber>
-          <EnabledFlag>1</EnabledFlag>
-          <Address>0</Address>
-          <ByteObject>0</ByteObject>
-          <ManyObjects>0</ManyObjects>
-          <SizeOfObject>0</SizeOfObject>
-          <BreakByAccess>0</BreakByAccess>
-          <BreakIfRCount>0</BreakIfRCount>
-          <Filename>ex70.c</Filename>
-          <ExecCommand></ExecCommand>
-          <Expression></Expression>
-        </Bp>
-      </Breakpoint>
       <DebugFlag>
         <trace>0</trace>
         <periodic>1</periodic>
@@ -203,13 +186,13 @@
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
-      <ColumnNumber>60</ColumnNumber>
+      <ColumnNumber>122</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>167</TopLine>
-      <CurrentLine>174</CurrentLine>
+      <TopLine>260</TopLine>
+      <CurrentLine>281</CurrentLine>
       <bDave2>0</bDave2>
-      <PathWithFileName>.\ex70.c</PathWithFileName>
-      <FilenameWithoutPath>ex70.c</FilenameWithoutPath>
+      <PathWithFileName>.\ex71.c</PathWithFileName>
+      <FilenameWithoutPath>ex71.c</FilenameWithoutPath>
     </File>
   </Group>
 
@@ -1557,10 +1540,10 @@
       <ActiveTab>0</ActiveTab>
       <Documents>
         <Doc>
-          <Name>.\ex70.c</Name>
-          <ColumnNumber>60</ColumnNumber>
-          <TopLine>167</TopLine>
-          <CurrentLine>174</CurrentLine>
+          <Name>.\ex71.c</Name>
+          <ColumnNumber>122</ColumnNumber>
+          <TopLine>260</TopLine>
+          <CurrentLine>281</CurrentLine>
         </Doc>
       </Documents>
     </MDIGroup>

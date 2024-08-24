@@ -170,7 +170,7 @@
         <aSer4>0</aSer4>
         <StkLoc>0</StkLoc>
         <TrcWin>0</TrcWin>
-        <newCpu>0</newCpu>
+        <newCpu>1</newCpu>
         <uProt>0</uProt>
       </DebugFlag>
       <LintExecutable></LintExecutable>
@@ -184,8 +184,8 @@
     <tvExpOptDlg>0</tvExpOptDlg>
     <cbSel>0</cbSel>
     <File>
-      <GroupNumber>1</GroupNumber>
-      <FileNumber>1</FileNumber>
+      <GroupNumber>0</GroupNumber>
+      <FileNumber>0</FileNumber>
       <FileType>2</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
@@ -198,15 +198,15 @@
       <FilenameWithoutPath>STARTUP.A51</FilenameWithoutPath>
     </File>
     <File>
-      <GroupNumber>1</GroupNumber>
-      <FileNumber>2</FileNumber>
+      <GroupNumber>0</GroupNumber>
+      <FileNumber>0</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
-      <ColumnNumber>60</ColumnNumber>
+      <ColumnNumber>20</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>167</TopLine>
-      <CurrentLine>174</CurrentLine>
+      <TopLine>257</TopLine>
+      <CurrentLine>257</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>.\ex70.c</PathWithFileName>
       <FilenameWithoutPath>ex70.c</FilenameWithoutPath>
@@ -1558,9 +1558,9 @@
       <Documents>
         <Doc>
           <Name>.\ex70.c</Name>
-          <ColumnNumber>60</ColumnNumber>
-          <TopLine>167</TopLine>
-          <CurrentLine>174</CurrentLine>
+          <ColumnNumber>20</ColumnNumber>
+          <TopLine>257</TopLine>
+          <CurrentLine>257</CurrentLine>
         </Doc>
       </Documents>
     </MDIGroup>
