@@ -1,0 +1,83 @@
+<html>
+<body>
+<pre>
+<h1>µVision Build Log</h1>
+<h2>Project:</h2>
+C:\Users\Achar\Desktop\Notes\proteus\source_code_by_exercises\chapter9\ex73\code\ex73.uvproj
+Project File Date:  09/09/2024
+
+<h2>Output:</h2>
+Build target 'Target 1'
+assembling STARTUP.A51...
+compiling main.c...
+linking...
+Program Size: data=9.0 xdata=0 code=16
+"ex73" - 0 Error(s), 0 Warning(s).
+Build target 'Target 1'
+linking...
+Program Size: data=9.0 xdata=0 code=16
+creating hex file from "ex73"...
+"ex73" - 0 Error(s), 0 Warning(s).
+Build target 'Target 1'
+compiling main.c...
+MAIN.C(62): warning C280: 'argc': unreferenced local variable
+MAIN.C(62): warning C280: 'argv': unreferenced local variable
+MAIN.C(65): warning C290: missing return value
+linking...
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_DELAYNMS?MAIN
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?READCURRENT?MAIN
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_MAIN?MAIN
+*** WARNING L1: UNRESOLVED EXTERNAL SYMBOL
+    SYMBOL:  MAIN
+    MODULE:  C:\KEIL_V5_C51\C51\LIB\C51S.LIB (?C_INIT)
+*** WARNING L2: REFERENCE MADE TO UNRESOLVED EXTERNAL
+    SYMBOL:  MAIN
+    MODULE:  C:\KEIL_V5_C51\C51\LIB\C51S.LIB (?C_INIT)
+    ADDRESS: 0010H
+Program Size: data=14.0 xdata=0 code=208
+creating hex file from "ex73"...
+"ex73" - 0 Error(s), 8 Warning(s).
+Build target 'Target 1'
+compiling main.c...
+MAIN.C(62): warning C280: 'argc': unreferenced local variable
+MAIN.C(62): warning C280: 'argv': unreferenced local variable
+linking...
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_DELAYNMS?MAIN
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?READCURRENT?MAIN
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_MAIN?MAIN
+*** WARNING L1: UNRESOLVED EXTERNAL SYMBOL
+    SYMBOL:  MAIN
+    MODULE:  C:\KEIL_V5_C51\C51\LIB\C51S.LIB (?C_INIT)
+*** WARNING L2: REFERENCE MADE TO UNRESOLVED EXTERNAL
+    SYMBOL:  MAIN
+    MODULE:  C:\KEIL_V5_C51\C51\LIB\C51S.LIB (?C_INIT)
+    ADDRESS: 0010H
+Program Size: data=14.0 xdata=0 code=211
+creating hex file from "ex73"...
+"ex73" - 0 Error(s), 7 Warning(s).
+Build target 'Target 1'
+compiling main.c...
+MAIN.C(64): error C174: return-expression on void-function
+Target not created
+Build target 'Target 1'
+compiling main.c...
+MAIN.C(143): error C174: return-expression on void-function
+Target not created
+Build target 'Target 1'
+compiling main.c...
+linking...
+Program Size: data=9.0 xdata=0 code=205
+creating hex file from "ex73"...
+"ex73" - 0 Error(s), 0 Warning(s).
+Build target 'Target 1'
+compiling main.c...
+linking...
+Program Size: data=9.0 xdata=0 code=205
+creating hex file from "ex73"...
+"ex73" - 0 Error(s), 0 Warning(s).

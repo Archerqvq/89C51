@@ -186,10 +186,10 @@
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
-      <ColumnNumber>122</ColumnNumber>
+      <ColumnNumber>19</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>260</TopLine>
-      <CurrentLine>281</CurrentLine>
+      <TopLine>277</TopLine>
+      <CurrentLine>288</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>.\ex71.c</PathWithFileName>
       <FilenameWithoutPath>ex71.c</FilenameWithoutPath>
@@ -1541,9 +1541,9 @@
       <Documents>
         <Doc>
           <Name>.\ex71.c</Name>
-          <ColumnNumber>122</ColumnNumber>
-          <TopLine>260</TopLine>
-          <CurrentLine>281</CurrentLine>
+          <ColumnNumber>19</ColumnNumber>
+          <TopLine>277</TopLine>
+          <CurrentLine>288</CurrentLine>
         </Doc>
       </Documents>
     </MDIGroup>

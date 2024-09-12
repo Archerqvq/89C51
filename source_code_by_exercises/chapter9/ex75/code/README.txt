@@ -1,0 +1,1 @@
+You better check on stm32 for more information about SPI bus

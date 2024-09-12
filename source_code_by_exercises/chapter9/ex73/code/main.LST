@@ -1,0 +1,170 @@
+C51 COMPILER V9.01   MAIN                                                                  09/11/2024 17:54:11 PAGE 1   
+
+
+C51 COMPILER V9.01, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN main.OBJ
+COMPILER INVOKED BY: C:\Keil_v5_C51\C51\BIN\C51.EXE main.c BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          // Example 73
+   2          // Using SPI(Serial Peripheral Interface) to write "0xAA" to X5045 and read it back     through P1
+   3          
+   4          #include <REG51.H>
+   5          #include <intrins.h> // For using _nop_()
+   6          
+   7          sbit SCK = P3^4; // Define p3.4 as SCK
+   8          sbit SI = P3^5;  // Define p3.5 as SI
+   9          sbit SO = P3^6;  // Define p3.6 as SO
+  10          sbit CS = P3^7;  // Define p3.7 as CS
+  11          
+  12          // Command for X5045 with SPI
+  13          #define WREN (0x06) // The write enable latch allows
+  14          #define WRDI (0x04) // The write enable latch disallows
+  15          #define WRSR (0x01) // Write status register
+  16          #define READ (0x03) // Read
+  17          #define WRITE (0x02) // Write
+  18          
+  19          void delay1ms(void)
+  20          {
+  21   1              unsigned char i, j;
+  22   1      
+  23   1              for(i = 0; i < 10; i++)
+  24   1              {
+  25   2                      for(j = 0; j < 33; j++)
+  26   2                      {
+  27   3                              ;
+  28   3                      }
+  29   2              }
+  30   1      }
+  31          
+  32          // Delay for x milliseconds   
+  33          void delaynms(unsigned char n)
+  34          {
+  35   1              unsigned char i;
+  36   1      
+  37   1              for(i = 0; i < n; i++)
+  38   1              {
+  39   2                      delay1ms();
+  40   2              }
+  41   1      }
+  42          
+  43          // Read data from the current address of X5045
+  44          unsigned char ReadCurrent(void)
+  45          {
+  46   1              unsigned char i;
+  47   1              unsigned char x = 0x00; // Store data that reads from x5045
+  48   1      
+  49   1              SCK = 1;                                // Set sck to high
+  50   1      
+  51   1              for(i = 0; i < 8; i++)
+  52   1              {
+  53   2                      SCK = 1; // Pull sck high
+  54   2                      SCK = 0; // Transmit data at the falling edge of SCK 
+  55   2                      x <<= 1; // Shift each binary digit in x left by one position, because the most significant byte data is
+C51 COMPILER V9.01   MAIN                                                                  09/11/2024 17:54:11 PAGE 2   
+
+             - read out first
+  56   2                      x |= (unsigned char)SO;
+  57   2              }
+  58   1      
+  59   1              return (x); // Return one byte that reads from SO
+  60   1      }
+  61          
+  62          // Write a byte to the address of x5045
+  63          void WriteCurrent(unsigned char dat)
+  64          {
+  65   1              unsigned char i;
+  66   1              SCK = 0;                        // Pull SCK to low
+  67   1      
+  68   1              for(i = 0; i < 8; i++)
+  69   1              {
+  70   2                      SI = (bit)(dat&0x80); // Assign the most significant bit of data to SI
+  71   2                                                                // Because the bits during data transmission are from high to low
+  72   2                      SCK = 0;
+  73   2                      SCK = 1;                          // Write bits while SCK in ascending edge
+  74   2                      // Shift left to make sure the bit that is needed to transfer next time is the most significant bit
+  75   2                      dat <<= 1;                        
+  76   2              }
+  77   1      }
+  78          
+  79          // Write register status, then set watchdog overflow time and data protection
+  80          void WriteSR(unsigned char rs)
+  81          {
+  82   1              CS = 0; // Pull CS low to select x5045
+  83   1              WriteCurrent(WREN); // The write enable latch allows 
+  84   1              CS = 1; // Pull CS high
+  85   1              CS = 0; // Pull CS low to make sure the register status command below is availible
+  86   1              WriteCurrent(WRSR);      // Write register status 
+  87   1              WriteCurrent(rs); // Write a new status
+  88   1              CS = 1; // Pull CS high
+  89   1      }
+  90          
+  91          // Write data to the designated address of x5045
+  92          void WriteSet(unsigned char dat, unsigned char addr)
+  93          {
+  94   1              SCK = 0;        // Set sck to a known status
+  95   1              CS = 0;         // Pull CS low to select x5045
+  96   1              WriteCurrent(WREN);     // The write enable latch allows
+  97   1              CS = 1;         // Pull CS high
+  98   1              CS = 0;         // Pull CS low otherwise the write command below will be omitted
+  99   1              WriteCurrent(WRITE);    // Write command
+ 100   1              WriteCurrent(addr);     // Designate the address
+ 101   1              WriteCurrent(dat);      // Designate the data
+ 102   1              CS = 1;
+ 103   1              SCK = 0;                // Set sck to a known status
+ 104   1      }
+ 105          
+ 106          // Read data from the designated address of x5045
+ 107          unsigned char ReadSet(unsigned char addr)
+ 108          {
+ 109   1              unsigned char dat;
+ 110   1              SCK = 0;        // Set sck to a known status
+ 111   1              CS = 0;         // Pull CS low to select x5045
+ 112   1              WriteCurrent(READ);     // Start to read
+ 113   1              WriteCurrent(addr);     // Designate the address that you require to read
+ 114   1              dat = ReadCurrent();    // Read data
+ 115   1              CS = 1; // Pull CS high
+ 116   1              SCK = 0;        // Set sck to a know status
+C51 COMPILER V9.01   MAIN                                                                  09/11/2024 17:54:11 PAGE 3   
+
+ 117   1              return dat; // Return the data that has been read       
+ 118   1      }
+ 119          
+ 120          // Watchdog reset
+ 121          void WatchDog(void)
+ 122          {
+ 123   1              CS = 1; // Pull CS high
+ 124   1              CS = 0; // Pull CS low
+ 125   1                              // A descending edge to reset watchdog's timer
+ 126   1              CS = 1; // Pull Cs high
+ 127   1      }
+ 128          
+ 129          void main(void)
+ 130          {
+ 131   1              // Write status register(Set watchdog overflow time to 600ms, and not write protection)
+ 132   1              WriteSR(0x12); 
+ 133   1              delaynms(10); // The write cycle of x5045 is 10ms
+ 134   1      
+ 135   1              while(1)
+ 136   1              {
+ 137   2                      WriteSet(0xAA, 0x10); // Write data "0xAA" to the designated address of "0x10"
+ 138   2                      delaynms(10);   // The write cycle of x5045 is 10ms
+ 139   2                      P1 = ReadSet(0x10); // Display the data that reads from x5045 on P1
+ 140   2                      WatchDog();     // Reset watchdog
+ 141   2              }
+ 142   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    190    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

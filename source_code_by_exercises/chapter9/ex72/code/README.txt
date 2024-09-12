@@ -1,0 +1,1 @@
+A "new" single wire bus, but not used commonly actually. Thus, it would be reproduced here, but you can check the book for more information
