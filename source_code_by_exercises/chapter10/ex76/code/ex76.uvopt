@@ -27,7 +27,7 @@
     <TargetOption>
       <CLK51>24000000</CLK51>
       <OPTTT>
-        <gFlags>0</gFlags>
+        <gFlags>1</gFlags>
         <BeepAtEnd>1</BeepAtEnd>
         <RunSim>1</RunSim>
         <RunTarget>0</RunTarget>
@@ -188,11 +188,11 @@
       <Focus>0</Focus>
       <ColumnNumber>0</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>0</TopLine>
-      <CurrentLine>0</CurrentLine>
+      <TopLine>228</TopLine>
+      <CurrentLine>228</CurrentLine>
       <bDave2>0</bDave2>
-      <PathWithFileName>.\ex74.c</PathWithFileName>
-      <FilenameWithoutPath>ex74.c</FilenameWithoutPath>
+      <PathWithFileName>.\ex76.c</PathWithFileName>
+      <FilenameWithoutPath>ex76.c</FilenameWithoutPath>
     </File>
   </Group>
 
@@ -1531,5 +1531,22 @@
       </Window>
     </View>
   </WinLayout>
+
+  <MDIGroups>
+    <Orientation>1</Orientation>
+    <ActiveMDIGroup>0</ActiveMDIGroup>
+    <MDIGroup>
+      <Size>100</Size>
+      <ActiveTab>0</ActiveTab>
+      <Documents>
+        <Doc>
+          <Name>.\ex76.c</Name>
+          <ColumnNumber>0</ColumnNumber>
+          <TopLine>228</TopLine>
+          <CurrentLine>228</CurrentLine>
+        </Doc>
+      </Documents>
+    </MDIGroup>
+  </MDIGroups>
 
 </ProjectOpt>

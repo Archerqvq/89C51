@@ -1,0 +1,281 @@
+C51 COMPILER V9.01   EX76                                                                  09/12/2024 13:51:15 PAGE 1   
+
+
+C51 COMPILER V9.01, COMPILATION OF MODULE EX76
+OBJECT MODULE PLACED IN ex76.OBJ
+COMPILER INVOKED BY: C:\Keil_v5_C51\C51\BIN\C51.EXE ex76.c BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          // Ex76: digital voltmeter based on ADC0832
+   2          #include <reg51.h> 
+   3          #include <intrins.h> // Definition of _nop_() included
+   4          
+   5          sbit CS = P3^4;
+   6          sbit CLK = P1^0;
+   7          sbit DIO = P1^1;
+   8          
+   9          unsigned char code digit[10] = {"0123456789"}; // Define digits string to display number
+  10          unsigned char code Str[]={"Volt="};                        // Comment on what is displaying
+  11          
+  12          sbit RS = P2^0; // Registers selection bit
+  13          sbit RW = P2^1; // Write/read selection bit     
+  14          sbit E = P2^2; // Enable bit
+  15          sbit BF = P0^7; // Busy flag bit
+  16          
+  17          void delay1ms()
+  18          {
+  19   1              unsigned char i, j;
+  20   1              
+  21   1              for(i = 0; i < 10; i++)
+  22   1              {
+  23   2                      for(j = 0; j < 33; j++)
+  24   2                      {
+  25   3                              ;
+  26   3                      }
+  27   2              }
+  28   1      }
+  29          
+  30          void delaynms(unsigned char n)
+  31          {
+  32   1              unsigned char i;
+  33   1              
+  34   1              for(i = 0; i < n; i++)
+  35   1              {
+  36   2                      delay1ms();
+  37   2              }
+  38   1      }
+  39          
+  40          
+  41          // Judge whether LCD is in busy or not
+  42          // return = 1, busy
+  43          // return = 0, available
+  44          bit BusyTest(void)
+  45          {
+  46   1              bit res;
+  47   1              
+  48   1              RS = 0;  
+  49   1              RW = 1; // According to the rules, status can be read while RS is at low and RW is at high
+  50   1              E = 1;  // Write is availabel if E is 1
+  51   1              _nop_(); 
+  52   1              _nop_();
+  53   1              _nop_();
+  54   1              _nop_(); // Four idle operations of machine cycle for responsive time of hardware
+  55   1              res = BF; // Get the busy flag
+C51 COMPILER V9.01   EX76                                                                  09/12/2024 13:51:15 PAGE 2   
+
+  56   1              E = 0;    // Reset E to low
+  57   1              
+  58   1              return res;
+  59   1      }
+  60          
+  61          // Write mode setting insturctions or display addresses into the LCD
+  62          void WriteInstruction(unsigned char dictate)
+  63          {
+  64   1              while(1 == BusyTest()); // Awaiting while LCD in busy
+  65   1              RS = 0; // Both RS and R/W are in low, instructions can be written
+  66   1              RW = 0;
+  67   1              E = 0;  // E is set to low
+  68   1                              // Because there should be a ascending edge before writing a instruction
+  69   1              
+  70   1              _nop_();
+  71   1              _nop_(); // Two machien cycles for hardware's response
+  72   1              P0 = dictate;   // Write data to P0, aka address or instruction
+  73   1              _nop_();
+  74   1              _nop_();
+  75   1              _nop_();
+  76   1              _nop_();
+  77   1              E = 1;  // E set to high
+  78   1              _nop_();
+  79   1              _nop_();
+  80   1              _nop_();
+  81   1              _nop_();
+  82   1              E = 0;  // A descending edge of E that makes LCD to start excuting instructions
+  83   1      }
+  84          
+  85          // Designate the actual address the string will display
+  86          void WriteAddress(unsigned char x)
+  87          {
+  88   1              WriteInstruction(x | 0x80);     // The correct way to display is "80H + address code"
+  89   1      }
+  90          
+  91          // Write data(ASCII) to the LCD
+  92          void WriteData(unsigned char y)
+  93          {
+  94   1              while(BusyTest() == 1);
+  95   1              RS = 1; // RS is high and R/W is low, then write data is available
+  96   1              RW = 0;
+  97   1              E = 0;  // E is set to low
+  98   1                              // Because there should be a ascending edge before writing a instruction 
+  99   1                              
+ 100   1              P0 = y;
+ 101   1              _nop_();
+ 102   1              _nop_();
+ 103   1              _nop_();
+ 104   1              _nop_();
+ 105   1              E = 1;  // E set to high
+ 106   1              _nop_();
+ 107   1              _nop_();
+ 108   1              _nop_();
+ 109   1              _nop_();
+ 110   1              E = 0;  // A descending edge of E that makes LCD to start excuting instructions 
+ 111   1      }
+ 112          
+ 113          // Initialzation of LCD display mode
+ 114          void LcdInitiate(void)
+ 115          {
+ 116   1              delaynms(15);
+ 117   1              WriteInstruction(0x38); // Display mode setting: 16x2 display, 5x7 dot matrix, 8 bits data interface
+C51 COMPILER V9.01   EX76                                                                  09/12/2024 13:51:15 PAGE 3   
+
+ 118   1              delaynms(5);
+ 119   1              WriteInstruction(0x38);
+ 120   1              delaynms(5);
+ 121   1              WriteInstruction(0x38);
+ 122   1              delaynms(5);                    // Three times to make sure initialzation successfully
+ 123   1              
+ 124   1              WriteInstruction(0x0C); // Display mode setting: Dispaly on, no cursor, cursor not flashes
+ 125   1              delaynms(5);
+ 126   1              WriteInstruction(0x06); // Display mode setting: cursor right shift but characters not mvoe
+ 127   1              delaynms(5);
+ 128   1              WriteInstruction(0x01); // Display mode setting: insturction to clear screen
+ 129   1              delaynms(5);
+ 130   1      }
+ 131          
+ 132          
+ 133          /*
+ 134          ** Displaying voltage :
+ 135          **
+ 136          */
+ 137          
+ 138          // Display volt symbol
+ 139          void display_volt(void)
+ 140          {
+ 141   1              unsigned char i;
+ 142   1              WriteAddress(0x03);     // Display at row 2, column 1
+ 143   1              
+ 144   1              i = 0;
+ 145   1              while(Str[i] != '\0')
+ 146   1              {
+ 147   2                      WriteData(Str[i]);
+ 148   2                      i++;
+ 149   2              }
+ 150   1      }
+ 151          
+ 152          /*****************************************************
+ 153          函数功能：显示电压的小数点
+ 154          ***************************************************/   
+ 155          void display_dot(void)
+ 156          {         
+ 157   1              WriteAddress(0x09);       //写显示地址，将在第1行第10列开始显示            
+ 158   1              WriteData('.');       //将小数点的字符常量写入LCD            
+ 159   1      }
+ 160          
+ 161          /*****************************************************
+ 162          函数功能：显示电压的单位(V)
+ 163          ***************************************************/   
+ 164          void display_V(void)
+ 165          {
+ 166   1          WriteAddress(0x0c); //写显示地址，将在第2行第13列开始显示   
+ 167   1              WriteData('V');     //将字符常量写入LCD                                          
+ 168   1      }
+ 169          /*****************************************************
+ 170          函数功能：显示电压的整数部分
+ 171          入口参数：x
+ 172          ***************************************************/ 
+ 173          void display1(unsigned char x)
+ 174          {
+ 175   1              WriteAddress(0x08);    //写显示地址,将在第2行第7列开始显示
+ 176   1              WriteData(digit[x]);    //将百位数字的字符常量写入LCD
+ 177   1       }
+ 178          /*****************************************************
+ 179          函数功能：显示电压的小数数部分
+C51 COMPILER V9.01   EX76                                                                  09/12/2024 13:51:15 PAGE 4   
+
+ 180          入口参数：x
+ 181          ***************************************************/ 
+ 182          void display2(unsigned char x)
+ 183          {
+ 184   1              unsigned char i,j;
+ 185   1              i=x/10;            //取十位（小数点后第一位）
+ 186   1              j=x%10;            //取个位（小数点后第二位）
+ 187   1              WriteAddress(0x0a);      //写显示地址,将在第1行第11列开始显示
+ 188   1              WriteData(digit[i]);     //将小数部分的第一位数字字符常量写入LCD
+ 189   1              WriteData(digit[j]);     //将小数部分的第一位数字字符常量写入LCD
+ 190   1      }
+ 191          
+ 192          // A/D convert
+ 193          unsigned char A_D(void)
+ 194          {
+ 195   1              unsigned char i, dat;
+ 196   1              
+ 197   1              CS = 1; // The beginning of one conversion cycle
+ 198   1              CLK = 0;        // Preparation for the first pulse      
+ 199   1              CS = 0;         // CS is available while CS is 0
+ 200   1              
+ 201   1              DIO = 1;        // DIO set to 1 to define the beginning signal
+ 202   1              CLK = 1;        // The first signal
+ 203   1              CLK = 0;        // DIO must be high before the desending edge of the first pulse
+ 204   1              DIO = 1;        // The second pulse
+ 205   1                                  // Before the descending edges of the second and third pulses, DI must be set 1/0
+ 206   1                                      // to select corresponding channel and channel 0 was selected
+ 207   1              CLK = 1;
+ 208   1              CLK = 0;        // The descendig edge of the second pulse
+ 209   1              DIO = 0;        // DI set to 0 to select channel 0
+ 210   1              CLK = 1;
+ 211   1              CLK = 0;        // The descendig edge of the third pulse
+ 212   1              DIO = 1;        // DI is not available after the third pulse
+ 213   1              
+ 214   1              for(i = 0; i < 8; i++)
+ 215   1              {
+ 216   2                      CLK = 1;
+ 217   2                      CLK = 0; 
+ 218   2                      dat <<= 1;
+ 219   2                      dat |= DIO;
+ 220   2              }       
+ 221   1              
+ 222   1              CS = 1; 
+ 223   1              return dat;
+ 224   1      }
+ 225          
+ 226          
+ 227          void main(void)
+ 228          {
+ 229   1              unsigned int AD_val;    //储存A/D转换后的值
+ 230   1              unsigned char Int,Dec;   //分别储存转换后的整数部分与小数部分
+ 231   1              LcdInitiate();         //将液晶初始化
+ 232   1              delaynms(5);           //延时5ms给硬件一点反应时间   
+ 233   1              display_volt();        //显示温度说明
+ 234   1              display_dot();         //显示温度的小数点
+ 235   1              display_V();           //显示温度的单位  
+ 236   1      
+ 237   1         while(1)
+ 238   1              {
+ 239   2                      AD_val= A_D();    //进行A/D转换
+ 240   2                      Int=(AD_val)/51;  //计算整数部分
+ 241   2                      // Dec=(AD_val%51)*100/51;    //计算小数部分
+C51 COMPILER V9.01   EX76                                                                  09/12/2024 13:51:15 PAGE 5   
+
+ 242   2                      Dec=(AD_val%51)*19.6/10;
+ 243   2                      display1(Int);     //显示整数部分
+ 244   2                      display2(Dec);     //显示小数部分
+ 245   2                      delaynms(250);     //延时250ms
+ 246   2              }       
+ 247   1      }
+ 248          
+ 249          
+ 250          
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    395    ----
+   CONSTANT SIZE    =     16    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----       3
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----       1
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

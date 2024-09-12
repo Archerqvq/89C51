@@ -1,0 +1,459 @@
+BL51 BANKED LINKER/LOCATER V6.22                                                        09/12/2024  13:51:15  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V6.22, INVOKED BY:
+C:\KEIL_V5_C51\C51\BIN\BL51.EXE STARTUP.obj, ex76.obj TO ex76
+
+
+MEMORY MODEL: SMALL WITH FLOATING POINT ARITHMETIC
+
+
+INPUT MODULES INCLUDED:
+  STARTUP.obj (?C_STARTUP)
+  ex76.obj (EX76)
+  C:\KEIL_V5_C51\C51\LIB\C51FPS.LIB (?C?FPMUL)
+  C:\KEIL_V5_C51\C51\LIB\C51FPS.LIB (?C?FPDIV)
+  C:\KEIL_V5_C51\C51\LIB\C51FPS.LIB (?C?FCAST)
+  C:\KEIL_V5_C51\C51\LIB\C51FPS.LIB (?C?CASTF)
+  C:\KEIL_V5_C51\C51\LIB\C51FPS.LIB (?C?FPGETOPN)
+  C:\KEIL_V5_C51\C51\LIB\C51S.LIB (?C?UIDIV)
+  C:\KEIL_V5_C51\C51\LIB\C51S.LIB (?C?LNEG)
+
+
+LINK MAP OF MODULE:  ex76 (?C_STARTUP)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+            DATA    0008H     0003H     UNIT         _DATA_GROUP_
+                    000BH     0015H                  *** GAP ***
+            BIT     0020H.0   0000H.1   UNIT         _BIT_GROUP_
+                    0020H.1   0000H.7                *** GAP ***
+            IDATA   0021H     0001H     UNIT         ?STACK
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0003H     ABSOLUTE     
+            CODE    0003H     02C8H     UNIT         ?C?LIB_CODE
+            CODE    02CBH     005EH     UNIT         ?PR?MAIN?EX76
+            CODE    0329H     0031H     UNIT         ?PR?A_D?EX76
+            CODE    035AH     002DH     UNIT         ?PR?LCDINITIATE?EX76
+            CODE    0387H     0023H     UNIT         ?PR?_WRITEINSTRUCTION?EX76
+            CODE    03AAH     0021H     UNIT         ?PR?_DISPLAY2?EX76
+            CODE    03CBH     001AH     UNIT         ?PR?_WRITEDATA?EX76
+            CODE    03E5H     0016H     UNIT         ?PR?DISPLAY_VOLT?EX76
+            CODE    03FBH     0013H     UNIT         ?PR?BUSYTEST?EX76
+            CODE    040EH     0010H     UNIT         ?PR?_DELAYNMS?EX76
+            CODE    041EH     0010H     UNIT         ?PR?_DISPLAY1?EX76
+            CODE    042EH     0010H     UNIT         ?CO?EX76
+            CODE    043EH     000DH     UNIT         ?PR?DELAY1MS?EX76
+            CODE    044BH     000CH     UNIT         ?C_C51STARTUP
+            CODE    0457H     000AH     UNIT         ?PR?DISPLAY_DOT?EX76
+            CODE    0461H     000AH     UNIT         ?PR?DISPLAY_V?EX76
+            CODE    046BH     0007H     UNIT         ?PR?_WRITEADDRESS?EX76
+
+
+
+OVERLAY MAP OF MODULE:   ex76 (?C_STARTUP)
+
+
+BL51 BANKED LINKER/LOCATER V6.22                                                      09/12/2024  13:51:15  PAGE 2
+
+
+SEGMENT                               BIT_GROUP          DATA_GROUP 
+  +--> CALLED SEGMENT              START    LENGTH     START    LENGTH
+----------------------------------------------------------------------
+?C_C51STARTUP                      -----    -----      -----    -----
+  +--> ?PR?MAIN?EX76
+
+?PR?MAIN?EX76                      -----    -----      0008H    0003H
+  +--> ?PR?LCDINITIATE?EX76
+  +--> ?PR?_DELAYNMS?EX76
+  +--> ?PR?DISPLAY_VOLT?EX76
+  +--> ?PR?DISPLAY_DOT?EX76
+  +--> ?PR?DISPLAY_V?EX76
+  +--> ?PR?A_D?EX76
+  +--> ?PR?_DISPLAY1?EX76
+  +--> ?PR?_DISPLAY2?EX76
+
+?PR?LCDINITIATE?EX76               -----    -----      -----    -----
+  +--> ?PR?_WRITEINSTRUCTION?EX76
+  +--> ?PR?_DELAYNMS?EX76
+
+?PR?_WRITEINSTRUCTION?EX76         -----    -----      -----    -----
+  +--> ?PR?_DELAYNMS?EX76
+  +--> ?PR?BUSYTEST?EX76
+
+?PR?_DELAYNMS?EX76                 -----    -----      -----    -----
+  +--> ?PR?DELAY1MS?EX76
+
+?PR?BUSYTEST?EX76                  0020H.0  0000H.1    -----    -----
+
+?PR?DISPLAY_VOLT?EX76              -----    -----      -----    -----
+  +--> ?PR?_WRITEADDRESS?EX76
+  +--> ?CO?EX76
+  +--> ?PR?_WRITEDATA?EX76
+
+?PR?_WRITEADDRESS?EX76             -----    -----      -----    -----
+  +--> ?PR?_WRITEINSTRUCTION?EX76
+
+?PR?_WRITEDATA?EX76                -----    -----      -----    -----
+  +--> ?PR?BUSYTEST?EX76
+
+?PR?DISPLAY_DOT?EX76               -----    -----      -----    -----
+  +--> ?PR?_WRITEADDRESS?EX76
+  +--> ?PR?_WRITEDATA?EX76
+
+?PR?DISPLAY_V?EX76                 -----    -----      -----    -----
+  +--> ?PR?_WRITEADDRESS?EX76
+  +--> ?PR?_WRITEDATA?EX76
+
+?PR?_DISPLAY1?EX76                 -----    -----      -----    -----
+  +--> ?PR?_WRITEADDRESS?EX76
+  +--> ?CO?EX76
+  +--> ?PR?_WRITEDATA?EX76
+
+?PR?_DISPLAY2?EX76                 -----    -----      -----    -----
+  +--> ?PR?_WRITEADDRESS?EX76
+  +--> ?CO?EX76
+  +--> ?PR?_WRITEDATA?EX76
+BL51 BANKED LINKER/LOCATER V6.22                                                      09/12/2024  13:51:15  PAGE 3
+
+
+
+
+
+SYMBOL TABLE OF MODULE:  ex76 (?C_STARTUP)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        ?C_STARTUP
+  C:044BH         SEGMENT       ?C_C51STARTUP
+  I:0021H         SEGMENT       ?STACK
+  C:0000H         PUBLIC        ?C_STARTUP
+  D:00E0H         SYMBOL        ACC
+  D:00F0H         SYMBOL        B
+  D:0083H         SYMBOL        DPH
+  D:0082H         SYMBOL        DPL
+  N:0000H         SYMBOL        IBPSTACK
+  N:0100H         SYMBOL        IBPSTACKTOP
+  N:0080H         SYMBOL        IDATALEN
+  C:044EH         SYMBOL        IDATALOOP
+  N:0000H         SYMBOL        PBPSTACK
+  N:0100H         SYMBOL        PBPSTACKTOP
+  N:0000H         SYMBOL        PDATALEN
+  N:0000H         SYMBOL        PDATASTART
+  N:0000H         SYMBOL        PPAGE
+  N:0000H         SYMBOL        PPAGEENABLE
+  D:00A0H         SYMBOL        PPAGE_SFR
+  D:0081H         SYMBOL        SP
+  C:044BH         SYMBOL        STARTUP1
+  N:0000H         SYMBOL        XBPSTACK
+  N:0000H         SYMBOL        XBPSTACKTOP
+  N:0000H         SYMBOL        XDATALEN
+  N:0000H         SYMBOL        XDATASTART
+  C:0000H         LINE#         126
+  C:044BH         LINE#         133
+  C:044DH         LINE#         134
+  C:044EH         LINE#         135
+  C:044FH         LINE#         136
+  C:0451H         LINE#         185
+  C:0454H         LINE#         196
+  -------         ENDMOD        ?C_STARTUP
+
+  -------         MODULE        EX76
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  D:0080H         PUBLIC        P0
+  D:0090H         PUBLIC        P1
+  D:00A0H         PUBLIC        P2
+  D:00B0H         PUBLIC        P3
+  B:0080H.7       PUBLIC        BF
+  C:03CBH         PUBLIC        _WriteData
+  C:042EH         PUBLIC        digit
+  B:00B0H.4       PUBLIC        CS
+  C:03E5H         PUBLIC        display_volt
+  C:0457H         PUBLIC        display_dot
+  C:043EH         PUBLIC        delay1ms
+  B:00A0H.0       PUBLIC        RS
+  C:02CBH         PUBLIC        main
+BL51 BANKED LINKER/LOCATER V6.22                                                      09/12/2024  13:51:15  PAGE 4
+
+
+  B:00A0H.1       PUBLIC        RW
+  C:041EH         PUBLIC        _display1
+  C:03AAH         PUBLIC        _display2
+  C:0461H         PUBLIC        display_V
+  C:038EH         PUBLIC        _WriteInstruction
+  C:0438H         PUBLIC        Str
+  B:00A0H.2       PUBLIC        E
+  C:03FBH         PUBLIC        BusyTest
+  C:035AH         PUBLIC        LcdInitiate
+  C:046BH         PUBLIC        _WriteAddress
+  B:0090H.0       PUBLIC        CLK
+  B:0090H.1       PUBLIC        DIO
+  C:040EH         PUBLIC        _delaynms
+  C:0329H         PUBLIC        A_D
+  -------         PROC          DELAY1MS
+  -------         DO            
+  D:0007H         SYMBOL        i
+  D:0006H         SYMBOL        j
+  -------         ENDDO         
+  C:043EH         LINE#         17
+  C:043EH         LINE#         18
+  C:043EH         LINE#         21
+  C:0440H         LINE#         22
+  C:0440H         LINE#         23
+  C:0442H         LINE#         24
+  C:0442H         LINE#         26
+  C:0446H         LINE#         27
+  C:044AH         LINE#         28
+  -------         ENDPROC       DELAY1MS
+  -------         PROC          _DELAYNMS
+  D:0005H         SYMBOL        n
+  -------         DO            
+  D:0004H         SYMBOL        i
+  -------         ENDDO         
+  C:040EH         LINE#         30
+  C:0410H         LINE#         31
+  C:0410H         LINE#         34
+  C:0417H         LINE#         35
+  C:0417H         LINE#         36
+  C:041AH         LINE#         37
+  C:041DH         LINE#         38
+  -------         ENDPROC       _DELAYNMS
+  -------         PROC          BUSYTEST
+  -------         DO            
+  B:0020H.0       SYMBOL        res
+  -------         ENDDO         
+  C:03FBH         LINE#         44
+  C:03FBH         LINE#         45
+  C:03FBH         LINE#         48
+  C:03FDH         LINE#         49
+  C:03FFH         LINE#         50
+  C:0401H         LINE#         51
+  C:0402H         LINE#         52
+  C:0403H         LINE#         53
+  C:0404H         LINE#         54
+  C:0405H         LINE#         55
+  C:0409H         LINE#         56
+BL51 BANKED LINKER/LOCATER V6.22                                                      09/12/2024  13:51:15  PAGE 5
+
+
+  C:040BH         LINE#         58
+  C:040DH         LINE#         59
+  -------         ENDPROC       BUSYTEST
+  C:0389H         SYMBOL        L?0036
+  -------         PROC          L?0035
+  -------         ENDPROC       L?0035
+  C:0389H         SYMBOL        L?0036
+  -------         PROC          _WRITEINSTRUCTION
+  D:0007H         SYMBOL        dictate
+  C:038EH         LINE#         62
+  C:038EH         LINE#         63
+  C:038EH         LINE#         64
+  C:0393H         LINE#         65
+  C:0395H         LINE#         66
+  C:0397H         LINE#         67
+  C:0399H         LINE#         70
+  C:039AH         LINE#         71
+  C:039BH         LINE#         72
+  C:039DH         LINE#         73
+  C:039EH         LINE#         74
+  C:039FH         LINE#         75
+  C:03A0H         LINE#         76
+  C:03A1H         LINE#         77
+  C:03A3H         LINE#         78
+  C:03A4H         LINE#         79
+  C:03A5H         LINE#         80
+  C:03A6H         LINE#         81
+  C:03A7H         LINE#         82
+  C:03A9H         LINE#         83
+  -------         ENDPROC       _WRITEINSTRUCTION
+  -------         PROC          _WRITEADDRESS
+  D:0007H         SYMBOL        x
+  C:046BH         LINE#         86
+  C:046BH         LINE#         87
+  C:046BH         LINE#         88
+  -------         ENDPROC       _WRITEADDRESS
+  -------         PROC          _WRITEDATA
+  D:0007H         SYMBOL        y
+  C:03CBH         LINE#         92
+  C:03CBH         LINE#         93
+  C:03CBH         LINE#         94
+  C:03D0H         LINE#         95
+  C:03D2H         LINE#         96
+  C:03D4H         LINE#         97
+  C:03D6H         LINE#         100
+  C:03D8H         LINE#         101
+  C:03D9H         LINE#         102
+  C:03DAH         LINE#         103
+  C:03DBH         LINE#         104
+  C:03DCH         LINE#         105
+  C:03DEH         LINE#         106
+  C:03DFH         LINE#         107
+  C:03E0H         LINE#         108
+  C:03E1H         LINE#         109
+  C:03E2H         LINE#         110
+  C:03E4H         LINE#         111
+  -------         ENDPROC       _WRITEDATA
+BL51 BANKED LINKER/LOCATER V6.22                                                      09/12/2024  13:51:15  PAGE 6
+
+
+  -------         PROC          LCDINITIATE
+  C:035AH         LINE#         114
+  C:035AH         LINE#         115
+  C:035AH         LINE#         116
+  C:035CH         LINE#         117
+  C:035FH         LINE#         118
+  C:035FH         LINE#         119
+  C:0362H         LINE#         120
+  C:0362H         LINE#         121
+  C:0365H         LINE#         122
+  C:036AH         LINE#         124
+  C:036FH         LINE#         125
+  C:0374H         LINE#         126
+  C:0379H         LINE#         127
+  C:037DH         LINE#         128
+  C:0382H         LINE#         129
+  -------         ENDPROC       LCDINITIATE
+  -------         PROC          DISPLAY_VOLT
+  -------         DO            
+  D:0006H         SYMBOL        i
+  -------         ENDDO         
+  C:03E5H         LINE#         139
+  C:03E5H         LINE#         140
+  C:03E5H         LINE#         142
+  C:03EAH         LINE#         144
+  C:03ECH         LINE#         145
+  C:03F4H         LINE#         146
+  C:03F4H         LINE#         147
+  C:03F7H         LINE#         148
+  C:03F8H         LINE#         149
+  C:03FAH         LINE#         150
+  -------         ENDPROC       DISPLAY_VOLT
+  -------         PROC          DISPLAY_DOT
+  C:0457H         LINE#         155
+  C:0457H         LINE#         156
+  C:0457H         LINE#         157
+  C:045CH         LINE#         158
+  -------         ENDPROC       DISPLAY_DOT
+  -------         PROC          DISPLAY_V
+  C:0461H         LINE#         164
+  C:0461H         LINE#         165
+  C:0461H         LINE#         166
+  C:0466H         LINE#         167
+  -------         ENDPROC       DISPLAY_V
+  -------         PROC          _DISPLAY1
+  D:0006H         SYMBOL        x
+  C:041EH         LINE#         173
+  C:0420H         LINE#         174
+  C:0420H         LINE#         175
+  C:0425H         LINE#         176
+  -------         ENDPROC       _DISPLAY1
+  -------         PROC          _DISPLAY2
+  D:0007H         SYMBOL        x
+  -------         DO            
+  D:0006H         SYMBOL        i
+  D:0005H         SYMBOL        j
+  -------         ENDDO         
+BL51 BANKED LINKER/LOCATER V6.22                                                      09/12/2024  13:51:15  PAGE 7
+
+
+  C:03AAH         LINE#         182
+  C:03AAH         LINE#         183
+  C:03AAH         LINE#         185
+  C:03B0H         LINE#         186
+  C:03B7H         LINE#         187
+  C:03BCH         LINE#         188
+  C:03C5H         LINE#         189
+  -------         ENDPROC       _DISPLAY2
+  -------         PROC          A_D
+  -------         DO            
+  D:0006H         SYMBOL        i
+  D:0007H         SYMBOL        dat
+  -------         ENDDO         
+  C:0329H         LINE#         193
+  C:0329H         LINE#         194
+  C:0329H         LINE#         197
+  C:032BH         LINE#         198
+  C:032DH         LINE#         199
+  C:032FH         LINE#         201
+  C:0331H         LINE#         202
+  C:0333H         LINE#         203
+  C:0335H         LINE#         204
+  C:0337H         LINE#         207
+  C:0339H         LINE#         208
+  C:033BH         LINE#         209
+  C:033DH         LINE#         210
+  C:033FH         LINE#         211
+  C:0341H         LINE#         212
+  C:0343H         LINE#         214
+  C:0345H         LINE#         215
+  C:0345H         LINE#         216
+  C:0347H         LINE#         217
+  C:0349H         LINE#         218
+  C:034DH         LINE#         219
+  C:0353H         LINE#         220
+  C:0357H         LINE#         222
+  C:0359H         LINE#         223
+  C:0359H         LINE#         224
+  -------         ENDPROC       A_D
+  -------         PROC          MAIN
+  -------         DO            
+  D:0008H         SYMBOL        AD_val
+  D:000AH         SYMBOL        Int
+  D:0003H         SYMBOL        Dec
+  -------         ENDDO         
+  C:02CBH         LINE#         227
+  C:02CBH         LINE#         228
+  C:02CBH         LINE#         231
+  C:02CEH         LINE#         232
+  C:02D3H         LINE#         233
+  C:02D6H         LINE#         234
+  C:02D9H         LINE#         235
+  C:02DCH         LINE#         237
+  C:02DCH         LINE#         238
+  C:02DCH         LINE#         239
+  C:02E4H         LINE#         240
+  C:02EFH         LINE#         242
+BL51 BANKED LINKER/LOCATER V6.22                                                      09/12/2024  13:51:15  PAGE 8
+
+
+  C:0318H         LINE#         243
+  C:031DH         LINE#         244
+  C:0322H         LINE#         245
+  C:0327H         LINE#         246
+  -------         ENDPROC       MAIN
+  -------         ENDMOD        EX76
+
+  -------         MODULE        ?C?FPMUL
+  C:0003H         PUBLIC        ?C?FPMUL
+  -------         ENDMOD        ?C?FPMUL
+
+  -------         MODULE        ?C?FPDIV
+  C:010CH         PUBLIC        ?C?FPDIV
+  -------         ENDMOD        ?C?FPDIV
+
+  -------         MODULE        ?C?FCAST
+  C:01B3H         PUBLIC        ?C?FCASTC
+  C:01AEH         PUBLIC        ?C?FCASTI
+  C:01A9H         PUBLIC        ?C?FCASTL
+  -------         ENDMOD        ?C?FCAST
+
+  -------         MODULE        ?C?CASTF
+  C:01E7H         PUBLIC        ?C?CASTF
+  -------         ENDMOD        ?C?CASTF
+
+  -------         MODULE        ?C?UIDIV
+  C:0268H         PUBLIC        ?C?UIDIV
+  -------         ENDMOD        ?C?UIDIV
+
+  -------         MODULE        ?C?LNEG
+  C:02BDH         PUBLIC        ?C?LNEG
+  -------         ENDMOD        ?C?LNEG
+
+Program Size: data=12.1 xdata=0 code=1138
+LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)

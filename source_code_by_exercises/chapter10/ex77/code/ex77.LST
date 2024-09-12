@@ -1,0 +1,40 @@
+C51 COMPILER V9.01   EX77                                                                  09/12/2024 14:17:57 PAGE 1   
+
+
+C51 COMPILER V9.01, COMPILATION OF MODULE EX77
+OBJECT MODULE PLACED IN ex77.OBJ
+COMPILER INVOKED BY: C:\Keil_v5_C51\C51\BIN\C51.EXE ex77.c BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1                   //实例77：用DAC0832产生锯齿波电压
+   2          #include<reg51.h>       //包含单片机寄存器的头文件
+   3          #include<absacc.h>     //包含对片外存储器地址进行操作的头文件
+   4          sbit CS=P2^7;          //将CS位定义为P2.7引脚
+   5          sbit WR12=P3^6;        //将WR12位定义为P3.6引脚
+   6          void main(void)
+   7          {
+   8   1              unsigned char i;
+   9   1         CS=0;    //输出低电平以选中DAC0832
+  10   1         WR12=0;  //输出低电平以选中DAC0832
+  11   1         while(1)
+  12   1           {
+  13   2             for(i=0;i<255;i++)
+  14   2              XBYTE[0x7fff]=i;         //将数据i送入片外地址07FFFH ，实际上就是通过P0口将数据送�
+             -��DAC0832 
+  15   2                }
+  16   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     17    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
